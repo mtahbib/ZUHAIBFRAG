@@ -7,7 +7,7 @@ export const products = [
     id: 1,
     name: "YB Ultra Male 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳4,100",
     notes: "Pear • Vanilla • Cinnamon",
     description:
       "A sweet, seductive, and powerful fragrance perfect for evenings and special occasions.",
@@ -18,7 +18,7 @@ export const products = [
     id: 2,
     name: "YB Le Male Elixir 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Honey • Tobacco • Vanilla",
     description:
       "Rich, warm and addictive scent with exceptional longevity.",
@@ -29,7 +29,7 @@ export const products = [
     id: 3,
     name: "YB Allure Homme Sport 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Orange • Marine Notes • Tonka Bean",
     description:
       "Fresh, energetic and sporty fragrance for everyday wear.",
@@ -40,7 +40,7 @@ export const products = [
     id: 4,
     name: "YB Eros Versace Men 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Mint • Apple • Vanilla",
     description:
       "Bold and attractive fragrance with a sweet masculine character.",
@@ -51,7 +51,7 @@ export const products = [
     id: 5,
     name: "YB Layton 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳5,100",
     notes: "Apple • Vanilla • Cardamom",
     description:
       "Luxurious and sophisticated scent with impressive projection.",
@@ -62,7 +62,7 @@ export const products = [
     id: 6,
     name: "YB One Million 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Blood Mandarin • Cinnamon • Leather",
     description:
       "A bold and attention-grabbing fragrance with sweet spicy accords.",
@@ -73,7 +73,7 @@ export const products = [
     id: 7,
     name: "YB Aqua Di Gio Profumo 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Sea Notes • Incense • Patchouli",
     description:
       "Fresh aquatic scent blended with dark and elegant depth.",
@@ -84,7 +84,7 @@ export const products = [
     id: 8,
     name: "YB Aqua Di Gio 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Bergamot • Marine Notes • Cedar",
     description:
       "One of the most iconic fresh fragrances ever created.",
@@ -95,7 +95,7 @@ export const products = [
     id: 9,
     name: "YB Ombre Leather 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳4,100",
     notes: "Leather • Jasmine • Amber",
     description:
       "Dark, luxurious leather fragrance with strong character.",
@@ -106,7 +106,7 @@ export const products = [
     id: 10,
     name: "YB Tobacco Vanille 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Tobacco • Vanilla • Dried Fruits",
     description:
       "Warm and luxurious fragrance with a rich tobacco accord.",
@@ -117,7 +117,7 @@ export const products = [
     id: 11,
     name: "YB Oud Wood 50ml",
     category: "male",
-    price: "৳4,499",
+    price: "৳3,250",
     notes: "Oud • Sandalwood • Cardamom",
     description:
       "Elegant woody fragrance featuring smooth oud notes.",
@@ -128,7 +128,7 @@ export const products = [
     id: 12,
     name: "YB Sauvage Elixir 100ml",
     category: "male",
-    price: "৳5,499",
+    price: "৳4,100",
     notes: "Cinnamon • Nutmeg • Lavender",
     description:
       "Extremely powerful and long-lasting modern masculine scent.",
@@ -139,7 +139,7 @@ export const products = [
     id: 13,
     name: "YB Aventus Absolut 100ml",
     category: "male",
-    price: "৳5,499",
+    price: "৳5,100",
     notes: "Pineapple • Blackcurrant • Woods",
     description:
       "A bold interpretation of the legendary Aventus DNA.",
@@ -150,7 +150,7 @@ export const products = [
     id: 14,
     name: "YB Bleu De 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Grapefruit • Incense • Cedar",
     description:
       "Clean, versatile and sophisticated fragrance for all occasions.",
@@ -161,7 +161,7 @@ export const products = [
     id: 15,
     name: "YB Sauvage 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Bergamot • Pepper • Ambroxan",
     description:
       "Fresh, spicy and universally loved masculine fragrance.",
@@ -172,7 +172,7 @@ export const products = [
     id: 16,
     name: "YB Pour Homme 100ml",
     category: "male",
-    price: "৳4,999",
+    price: "৳4,100",
     notes: "Citrus • Lavender • Woods",
     description:
       "Classic masculine fragrance suitable for daily wear.",
@@ -187,7 +187,7 @@ export const products = [
     id: 17,
     name: "YB Flora 100ml",
     category: "female",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Peony • Rose • Citrus",
     description:
       "Elegant floral fragrance with feminine charm.",
@@ -198,7 +198,7 @@ export const products = [
     id: 18,
     name: "YB Good Girl 100ml",
     category: "female",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Jasmine • Tonka Bean • Cocoa",
     description:
       "A seductive and sophisticated feminine fragrance.",
@@ -209,7 +209,7 @@ export const products = [
     id: 19,
     name: "YB Libre 100ml",
     category: "female",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Lavender • Orange Blossom • Vanilla",
     description:
       "Modern floral fragrance with freedom and confidence.",
@@ -220,7 +220,7 @@ export const products = [
     id: 20,
     name: "YB Black Opium 100ml",
     category: "female",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Coffee • Vanilla • White Flowers",
     description:
       "Bold, addictive and sensual fragrance.",
@@ -231,7 +231,7 @@ export const products = [
     id: 21,
     name: "YB Coco Mademoiselle 100ml",
     category: "female",
-    price: "৳4,999",
+    price: "৳3,250",
     notes: "Orange • Rose • Patchouli",
     description:
       "Timeless and elegant feminine fragrance.",
@@ -242,7 +242,7 @@ export const products = [
     id: 22,
     name: "YB Pour Femme 100ml",
     category: "female",
-    price: "৳4,999",
+    price: "৳4,100",
     notes: "Floral Notes • Vanilla • Musk",
     description:
       "A soft and graceful fragrance for everyday wear.",
@@ -257,7 +257,7 @@ export const products = [
     id: 23,
     name: "YB French Oud",
     category: "unisex",
-    price: "৳5,499",
+    price: "৳3,250",
     notes: "Oud • Rose • Amber",
     description:
       "Luxurious oud fragrance suitable for both men and women.",
@@ -268,7 +268,7 @@ export const products = [
     id: 24,
     name: "YB Baccarat Rouge 540 100ml",
     category: "unisex",
-    price: "৳5,499",
+    price: "৳5,100",
     notes: "Saffron • Amberwood • Cedar",
     description:
       "One of the world's most famous luxury fragrance inspirations.",
@@ -279,7 +279,7 @@ export const products = [
     id: 25,
     name: "YB Pacific Chill 100ml",
     category: "unisex",
-    price: "৳5,499",
+    price: "৳5,100",
     notes: "Mint • Lemon • Fruits",
     description:
       "Refreshing and uplifting fragrance with vibrant energy.",
@@ -290,7 +290,7 @@ export const products = [
     id: 26,
     name: "YB Ignitation 100ml",
     category: "unisex",
-    price: "৳5,499",
+    price: "৳5,400",
     notes: "Amber • Woods • Spice",
     description:
       "A bold and captivating signature scent.",
@@ -301,7 +301,7 @@ export const products = [
     id: 27,
     name: "YB Wulong Cha 100ml",
     category: "unisex",
-    price: "৳5,499",
+    price: "৳5,100",
     notes: "Tea • Citrus • Fig",
     description:
       "Fresh, clean and sophisticated tea-based fragrance.",
