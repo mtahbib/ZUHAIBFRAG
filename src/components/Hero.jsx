@@ -106,7 +106,7 @@ export default function Hero() {
         position: "relative",
         overflow: "hidden",
         textAlign: "center",
-        padding: "100px 20px 80px",
+        padding: "40px 20px 80px",
       }}
     >
       {/* Concentric rings */}
@@ -149,8 +149,8 @@ export default function Hero() {
           src="/k1.png"
           alt="Yusuf Bhai Fragrance"
           style={{
-            width: "600px",
-            maxWidth: "78vw",
+            width: "760px",
+            maxWidth: "90vw",
             display: "block",
             filter:
               "drop-shadow(0 0 90px rgba(212,175,55,0.5)) drop-shadow(0 0 25px rgba(212,175,55,0.2))",
@@ -162,7 +162,7 @@ export default function Hero() {
       {/* Text block */}
       <div
         ref={textRef}
-        style={{ zIndex: 20, position: "relative", marginTop: "28px" }}
+        style={{ zIndex: 20, position: "relative", marginTop: "10px" }}
       >
         <div
           style={{

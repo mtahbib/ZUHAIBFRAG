@@ -53,15 +53,15 @@ export default function ProductModal({ product, onClose }) {
         onClick={(e) => e.stopPropagation()}
         style={{
           width: "100%",
-          maxWidth: isMobile ? "100%" : "860px",
-          maxHeight: isMobile ? "90vh" : "none",
-          overflowY: isMobile ? "auto" : "visible",
+          maxWidth: isMobile ? "100%" : "1080px",
+          maxHeight: "92vh",
+          overflowX: "hidden",
+          overflowY: "auto",
           background: "linear-gradient(135deg, #0d0d0d 0%, #111 100%)",
           borderRadius: isMobile ? "20px" : "28px",
           border: "1px solid rgba(212,175,55,0.25)",
           boxShadow:
             "0 0 80px rgba(212,175,55,0.08), 0 40px 120px rgba(0,0,0,0.6)",
-          overflow: "hidden",
           animation: "float-up 0.45s cubic-bezier(0.16,1,0.3,1) forwards",
           position: "relative",
         }}
@@ -92,7 +92,7 @@ export default function ProductModal({ product, onClose }) {
             border: "none",
             color: "rgba(255,255,255,0.35)",
             fontSize: "22px",
-            cursor: "none",
+            cursor: "pointer",
             lineHeight: 1,
             transition: "color 0.3s ease",
             zIndex: 2,
@@ -105,8 +105,8 @@ export default function ProductModal({ product, onClose }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1.3fr",
-            minHeight: isMobile ? "auto" : "420px",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1.4fr",
+            minHeight: isMobile ? "auto" : "540px",
           }}
         >
           {/* Left — image panel */}
@@ -118,7 +118,7 @@ export default function ProductModal({ product, onClose }) {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              padding: isMobile ? "36px 24px 20px" : "50px 30px",
+              padding: isMobile ? "40px 28px 24px" : "60px 40px",
               borderRight: isMobile ? "none" : "1px solid rgba(212,175,55,0.1)",
               borderBottom: isMobile ? "1px solid rgba(212,175,55,0.1)" : "none",
               position: "relative",
@@ -149,19 +149,19 @@ export default function ProductModal({ product, onClose }) {
               src={product.image}
               alt={product.name}
               style={{
-                width: "200px",
-                maxWidth: "85%",
+                width: "280px",
+                maxWidth: "88%",
                 filter:
-                  "drop-shadow(0 0 50px rgba(212,175,55,0.4)) drop-shadow(0 0 15px rgba(212,175,55,0.15))",
+                  "drop-shadow(0 0 70px rgba(212,175,55,0.45)) drop-shadow(0 0 20px rgba(212,175,55,0.18))",
               }}
             />
 
             {/* Price below image */}
             <div
               style={{
-                marginTop: "24px",
+                marginTop: "28px",
                 color: "#D4AF37",
-                fontSize: "1.8rem",
+                fontSize: "2.2rem",
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 400,
                 letterSpacing: "1px",
@@ -174,7 +174,7 @@ export default function ProductModal({ product, onClose }) {
           {/* Right — details panel */}
           <div
             style={{
-              padding: isMobile ? "28px 24px 32px" : "50px 44px 44px",
+              padding: isMobile ? "30px 28px 36px" : "60px 54px 54px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -185,7 +185,7 @@ export default function ProductModal({ product, onClose }) {
             <h2
               style={{
                 color: "#fff",
-                fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+                fontSize: "clamp(1.8rem, 3vw, 2.8rem)",
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 400,
                 lineHeight: 1.2,
