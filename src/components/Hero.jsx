@@ -248,6 +248,8 @@ export default function Hero() {
             e.currentTarget.style.letterSpacing = "4px";
             e.currentTarget.style.borderColor = "rgba(212,175,55,0.5)";
           }}
+          data-magnetic
+          data-cursor="EXPLORE"
           style={{
             background: "transparent",
             color: "#D4AF37",

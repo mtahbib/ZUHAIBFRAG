@@ -5,6 +5,7 @@ import useIsMobile from "../hooks/useIsMobile";
 import { products } from "../data/products";
 import ProductModal from "./ProductModal";
 import { useCart } from "../context/CartContext";
+import SplitHeading from "./SplitHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -403,7 +404,7 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
         key={captionKey}
         style={{
           textAlign: "center",
-          padding: isMobile ? "28px 20px 20px" : "38px 20px 28px",
+          padding: isMobile ? "10px 20px 20px" : "14px 20px 28px",
           animation: "_gcaption 0.55s cubic-bezier(0.22,0.8,0.2,1) both",
         }}
       >
@@ -559,6 +560,7 @@ function TiltCard({ product, onSelect }) {
     <div style={{ perspective: "600px" }}>
       <div
         ref={cardRef}
+        data-cursor="VIEW"
         onMouseMove={onMove}
         onMouseEnter={() => setHov(true)}
         onMouseLeave={onLeave}
@@ -635,6 +637,7 @@ function TiltCard({ product, onSelect }) {
           </button>
           <button
             onClick={handleAddToCart}
+            data-cursor="ADD"
             style={{
               background: added ? "rgba(212,175,55,0.2)" : hov ? "#D4AF37" : "transparent",
               color: added ? "#D4AF37" : hov ? "#000" : "#D4AF37",
@@ -718,12 +721,13 @@ export default function ProductCatalog() {
           }}>
             FULL RANGE
           </div>
-          <h2 style={{
-            color: "#fff", fontSize: "clamp(2.8rem,6vw,5rem)", margin: 0,
-            fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-          }}>
-            Product Catalog
-          </h2>
+          <SplitHeading
+            text="Product Catalog"
+            style={{
+              color: "#fff", fontSize: "clamp(2.8rem,6vw,5rem)", margin: 0,
+              fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
+            }}
+          />
         </div>
 
         {/* ── Search ── */}

@@ -2,13 +2,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import useIsMobile from "../hooks/useIsMobile";
+import SplitHeading from "./SplitHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
-  { value: "27+", label: "Fragrances" },
-  { value: "100%", label: "Authentic" },
-  { value: "BD", label: "Nationwide" },
+  { end: 27, suffix: "+", label: "Fragrances" },
+  { end: 100, suffix: "%", label: "Authentic" },
+  { end: null, text: "BD",  label: "Nationwide" },
 ];
 
 export default function StorySection() {
@@ -17,6 +18,7 @@ export default function StorySection() {
   const imageRef   = useRef(null);
   const textRef    = useRef(null);
   const statsRef   = useRef(null);
+  const counterRefs = useRef([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -38,6 +40,22 @@ export default function StorySection() {
         { y: 0, opacity: 1, duration: 0.9, stagger: 0.13, ease: "power2.out", clearProps: "opacity,transform",
           scrollTrigger: { trigger: statsRef.current, start: "top 88%", once: true } }
       );
+
+      // Count-up animation for numeric stats
+      STATS.forEach((stat, i) => {
+        if (stat.end == null) return;
+        const el = counterRefs.current[i];
+        if (!el) return;
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: stat.end,
+          duration: 1.8,
+          ease: "power2.out",
+          snap: { val: 1 },
+          onUpdate: () => { el.textContent = Math.round(obj.val) + stat.suffix; },
+          scrollTrigger: { trigger: statsRef.current, start: "top 88%", once: true },
+        });
+      });
     }, sectionRef);
     const t = setTimeout(() => ScrollTrigger.refresh(), 200);
     return () => { ctx.revert(); clearTimeout(t); };
@@ -203,9 +221,10 @@ export default function StorySection() {
               paddingTop: "40px",
             }}
           >
-            {STATS.map(({ value, label }) => (
+            {STATS.map(({ end, suffix, text, label }, i) => (
               <div key={label}>
                 <div
+                  ref={(el) => (counterRefs.current[i] = el)}
                   style={{
                     color: "#D4AF37",
                     fontSize: "2.8rem",
@@ -214,7 +233,7 @@ export default function StorySection() {
                     lineHeight: 1,
                   }}
                 >
-                  {value}
+                  {end != null ? `0${suffix}` : text}
                 </div>
                 <div
                   style={{

@@ -2,6 +2,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import useIsMobile from "../hooks/useIsMobile";
+import SplitHeading from "./SplitHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,7 +68,8 @@ export default function Collections() {
         >
           SHOP BY COLLECTION
         </div>
-        <h2
+        <SplitHeading
+          text="Find Your Signature Scent"
           style={{
             color: "#fff",
             fontSize: "clamp(2.8rem,6vw,5rem)",
@@ -75,9 +77,7 @@ export default function Collections() {
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
           }}
-        >
-          Find Your Signature Scent
-        </h2>
+        />
       </div>
 
       <div

@@ -2,6 +2,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
 import useIsMobile from "../hooks/useIsMobile";
+import SplitHeading from "./SplitHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -237,7 +238,8 @@ export default function NotesSection() {
         >
           FRAGRANCE EXPERIENCE
         </div>
-        <h2
+        <SplitHeading
+          text="Discover The Notes"
           style={{
             color: "#fff",
             fontSize: "clamp(2.8rem,6vw,5rem)",
@@ -245,9 +247,7 @@ export default function NotesSection() {
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
           }}
-        >
-          Discover The Notes
-        </h2>
+        />
         <p
           style={{
             color: "rgba(255,255,255,0.3)",
