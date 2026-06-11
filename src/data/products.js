@@ -288,7 +288,7 @@ export const products = [
 
   {
     id: 26,
-    name: "YB Ignitation 100ml",
+    name: "YB Imagination 100ml",
     category: "unisex",
     price: "৳5,400",
     notes: "Amber • Woods • Spice",
