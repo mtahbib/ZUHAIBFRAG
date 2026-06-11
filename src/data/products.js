@@ -257,7 +257,7 @@ export const products = [
     id: 23,
     name: "YB French Oud",
     category: "unisex",
-    price: "৳3,250",
+    price: "৳2,500",
     notes: "Oud • Rose • Amber",
     description:
       "Luxurious oud fragrance suitable for both men and women.",
