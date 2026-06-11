@@ -255,7 +255,7 @@ export const products = [
 
   {
     id: 23,
-    name: "YB French Oud",
+    name: "YB French Oud 50ml",
     category: "unisex",
     price: "৳2,500",
     notes: "Oud • Rose • Amber",
