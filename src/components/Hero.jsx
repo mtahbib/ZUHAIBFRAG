@@ -173,7 +173,7 @@ export default function Hero() {
             fontWeight: 300,
           }}
         >
-          DUBAI'S FINEST PERFUMER
+          AUTHENTIC YUSUF BHAI FRAGRANCES
         </div>
 
         <h1
