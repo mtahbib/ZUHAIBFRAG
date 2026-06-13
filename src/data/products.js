@@ -1,8 +1,4 @@
 export const products = [
-  // =====================
-  // MALE FRAGRANCES
-  // =====================
-
   {
     id: 1,
     name: "YB Ultra Male 100ml",
@@ -21,6 +17,7 @@ export const products = [
     performance: ["Long Lasting", "Strong Projection", "Rich & Addictive Scent Profile"],
     image: "/bottle.png",
     modalImage: "/umm.png",
+    themeColor: "#9B5FBF",
   },
 
   {
@@ -41,6 +38,7 @@ export const products = [
     performance: ["Excellent Longevity", "Strong Projection", "Rich & Addictive Scent Trail"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#4A78C9",
   },
 
   {
@@ -51,16 +49,17 @@ export const products = [
     inspiration: "Chanel Allure Homme Sport",
     notes: "Orange • Cedar • Tonka Bean",
     description:
-      "Fresh, energetic, and effortlessly refined, YB Allure Homme Sport is designed for men who embrace an active lifestyle without compromising on elegance. A vibrant burst of citrus freshness opens the fragrance, creating an invigorating and uplifting start. As it develops, aromatic spices and woody accords add depth and character, while a smooth blend of musk and tonka bean provides a clean, masculine finish. Dynamic and versatile, this fragrance transitions seamlessly from the gym to the office and from casual outings to evening occasions.",
+      "A fresh and energetic fragrance designed for active and confident men. Citrus freshness blends with marine accords and spicy pepper before settling into a clean woody base.",
     fragranceFamily: "Fresh Woody Aromatic",
     tagline: "Fresh energy. Timeless confidence.",
-    topNotes: ["Orange", "Mandarin Orange", "Sea Notes", "Aldehydes"],
-    heartNotes: ["Pepper", "Neroli", "Cedar"],
-    baseNotes: ["Tonka Bean", "White Musk", "Amber", "Vetiver", "Vanilla"],
-    perfectFor: ["Daily Wear", "Office & Professional Settings", "Sports & Outdoor Activities", "Spring & Summer"],
-    performance: ["Fresh & Clean Opening", "Moderate to Strong Projection", "Long-Lasting Everyday Signature Scent"],
+    topNotes: ["Orange", "Mandarin", "Sea Notes"],
+    heartNotes: ["Pepper", "Neroli", "Cedarwood"],
+    baseNotes: ["White Musk", "Tonka Bean", "Amber"],
+    perfectFor: ["Gym & Sports", "Office Wear", "Casual Outings", "Summer"],
+    performance: ["Long Lasting", "Fresh Projection", "Clean Masculine Appeal"],
     image: "/ahmb.png",
     modalImage: "/ahsm.png",
+    themeColor: "#2E9BD4",
   },
 
   {
@@ -71,9 +70,16 @@ export const products = [
     inspiration: "Versace Eros",
     notes: "Mint • Apple • Vanilla",
     description:
-      "Bold and attractive fragrance with a sweet masculine character.",
+      "A powerful fragrance inspired by passion and confidence. Fresh mint and green apple meet warm vanilla and tonka bean, creating a bold and magnetic scent profile.",
+    fragranceFamily: "Fresh Spicy",
+    topNotes: ["Mint", "Green Apple", "Lemon"],
+    heartNotes: ["Tonka Bean", "Geranium", "Ambroxan"],
+    baseNotes: ["Vanilla", "Vetiver", "Oakmoss", "Cedarwood"],
+    perfectFor: ["Parties", "Clubbing", "Date Nights", "Autumn & Winter"],
+    performance: ["Excellent Longevity", "Strong Projection", "Attention-Grabbing"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#00A8BC",
   },
 
   {
@@ -84,9 +90,16 @@ export const products = [
     inspiration: "Parfums de Marly Layton",
     notes: "Apple • Vanilla • Cardamom",
     description:
-      "Luxurious and sophisticated scent with impressive projection.",
+      "A sophisticated blend of fruity freshness and creamy vanilla. Crisp apple and bergamot create an elegant opening, while lavender and spices lead into a luxurious woody base.",
+    fragranceFamily: "Fruity Aromatic",
+    topNotes: ["Apple", "Bergamot", "Lavender"],
+    heartNotes: ["Jasmine", "Violet", "Cardamom"],
+    baseNotes: ["Vanilla", "Sandalwood", "Guaiac Wood", "Patchouli"],
+    perfectFor: ["Formal Events", "Luxury Wear", "Date Nights", "Autumn & Winter"],
+    performance: ["Exceptional Longevity", "Strong Projection", "Refined & Versatile"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#5070D4",
   },
 
   {
@@ -97,9 +110,16 @@ export const products = [
     inspiration: "Paco Rabanne 1 Million",
     notes: "Blood Mandarin • Cinnamon • Leather",
     description:
-      "A bold and attention-grabbing fragrance with sweet spicy accords.",
+      "A daring and charismatic fragrance built around spicy freshness and warm amber sweetness. Vibrant citrus and cinnamon lead into a rich leather and amber base.",
+    fragranceFamily: "Oriental Spicy",
+    topNotes: ["Blood Mandarin", "Grapefruit", "Mint"],
+    heartNotes: ["Cinnamon", "Rose", "Spices"],
+    baseNotes: ["Leather", "Amber", "Patchouli", "Woody Notes"],
+    perfectFor: ["Nightlife", "Parties", "Special Occasions", "Cool Weather"],
+    performance: ["Long Lasting", "Strong Projection", "Bold & Confident"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#B8860B",
   },
 
   {
@@ -110,9 +130,16 @@ export const products = [
     inspiration: "Giorgio Armani Acqua di Giò Profumo",
     notes: "Sea Notes • Incense • Patchouli",
     description:
-      "Fresh aquatic scent blended with dark and elegant depth.",
+      "A sophisticated interpretation of aquatic freshness. Marine notes blend with bergamot and aromatic herbs before drying down into incense and patchouli.",
+    fragranceFamily: "Aromatic Aquatic",
+    topNotes: ["Sea Notes", "Bergamot"],
+    heartNotes: ["Rosemary", "Sage", "Geranium"],
+    baseNotes: ["Incense", "Patchouli"],
+    perfectFor: ["Office Wear", "Formal Events", "Summer", "Signature Scent"],
+    performance: ["Excellent Longevity", "Moderate Projection", "Fresh & Elegant"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#2E80C4",
   },
 
   {
@@ -123,9 +150,16 @@ export const products = [
     inspiration: "Giorgio Armani Acqua di Giò",
     notes: "Bergamot • Marine Notes • Cedar",
     description:
-      "One of the most iconic fresh fragrances ever created.",
+      "A timeless aquatic fragrance that captures the freshness of the sea. Crisp citrus and marine accords create a refreshing opening, balanced by aromatic herbs and light woods.",
+    fragranceFamily: "Fresh Aquatic",
+    topNotes: ["Lime", "Lemon", "Bergamot"],
+    heartNotes: ["Marine Notes", "Jasmine", "Rosemary"],
+    baseNotes: ["White Musk", "Cedarwood", "Patchouli"],
+    perfectFor: ["Daily Wear", "Summer", "Office Wear", "Casual Outings"],
+    performance: ["Fresh Longevity", "Moderate Projection", "Clean & Refreshing"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#17B5CC",
   },
 
   {
@@ -136,9 +170,16 @@ export const products = [
     inspiration: "Tom Ford Ombre Leather",
     notes: "Leather • Jasmine • Amber",
     description:
-      "Dark, luxurious leather fragrance with strong character.",
+      "A bold and rugged leather fragrance inspired by freedom and open landscapes. Rich leather is wrapped with floral nuances and warm amber for a powerful masculine statement.",
+    fragranceFamily: "Leather",
+    topNotes: ["Cardamom"],
+    heartNotes: ["Leather", "Jasmine Sambac"],
+    baseNotes: ["Amber", "Patchouli", "Moss"],
+    perfectFor: ["Evening Wear", "Leather Lovers", "Winter", "Special Occasions"],
+    performance: ["Long Lasting", "Strong Projection", "Bold Leather Presence"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#C47A35",
   },
 
   {
@@ -149,9 +190,16 @@ export const products = [
     inspiration: "Tom Ford Tobacco Vanille",
     notes: "Tobacco • Vanilla • Dried Fruits",
     description:
-      "Warm and luxurious fragrance with a rich tobacco accord.",
+      "A luxurious blend of rich tobacco leaves and creamy vanilla. Warm spices add depth while dried fruits and woods create a comforting and sophisticated aura.",
+    fragranceFamily: "Oriental Woody",
+    topNotes: ["Tobacco Leaf", "Spices"],
+    heartNotes: ["Vanilla", "Cacao", "Tonka Bean"],
+    baseNotes: ["Dried Fruits", "Woody Notes"],
+    perfectFor: ["Winter", "Formal Events", "Evening Wear", "Luxury Occasions"],
+    performance: ["Exceptional Longevity", "Strong Projection", "Warm & Addictive"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#B5763A",
   },
 
   {
@@ -162,9 +210,16 @@ export const products = [
     inspiration: "Tom Ford Oud Wood",
     notes: "Oud • Sandalwood • Cardamom",
     description:
-      "Elegant woody fragrance featuring smooth oud notes.",
+      "An elegant and refined oud fragrance that balances exotic woods with smooth spices. Luxurious, versatile, and effortlessly sophisticated.",
+    fragranceFamily: "Woody Spicy",
+    topNotes: ["Cardamom", "Pepper"],
+    heartNotes: ["Oud", "Sandalwood", "Vetiver"],
+    baseNotes: ["Tonka Bean", "Amber", "Vanilla"],
+    perfectFor: ["Luxury Wear", "Business Meetings", "Evening Events", "All Seasons"],
+    performance: ["Long Lasting", "Moderate Projection", "Smooth Oud Experience"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#A0693A",
   },
 
   {
@@ -175,9 +230,16 @@ export const products = [
     inspiration: "Dior Sauvage Elixir",
     notes: "Cinnamon • Nutmeg • Lavender",
     description:
-      "Extremely powerful and long-lasting modern masculine scent.",
+      "A highly concentrated and powerful fragrance that combines aromatic freshness with rich spices and woods. Bold, masculine, and unforgettable.",
+    fragranceFamily: "Woody Spicy",
+    topNotes: ["Grapefruit", "Nutmeg", "Cinnamon"],
+    heartNotes: ["Lavender"],
+    baseNotes: ["Licorice", "Amber", "Patchouli", "Sandalwood"],
+    perfectFor: ["Night Out", "Winter", "Special Events", "Signature Scent"],
+    performance: ["Beast Mode Longevity", "Extremely Strong Projection", "Ultra Masculine"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#4060C9",
   },
 
   {
@@ -188,9 +250,16 @@ export const products = [
     inspiration: "Creed Absolu Aventus",
     notes: "Pineapple • Blackcurrant • Woods",
     description:
-      "A bold interpretation of the legendary Aventus DNA.",
+      "A refined and luxurious fragrance inspired by modern success and ambition. Bright fruits and smoky woods create a powerful scent with exceptional depth.",
+    fragranceFamily: "Woody Chypre",
+    topNotes: ["Bergamot", "Blackcurrant", "Grapefruit"],
+    heartNotes: ["Pineapple", "Ginger", "Patchouli"],
+    baseNotes: ["Vetiver", "Oakmoss", "Ambergris"],
+    perfectFor: ["Business Professionals", "Formal Events", "Signature Wear", "All Seasons"],
+    performance: ["Exceptional Longevity", "Strong Projection", "Sophisticated & Powerful"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#2EAD60",
   },
 
   {
@@ -201,9 +270,16 @@ export const products = [
     inspiration: "Bleu de Chanel",
     notes: "Grapefruit • Incense • Cedar",
     description:
-      "Clean, versatile and sophisticated fragrance for all occasions.",
+      "A timeless masculine fragrance blending citrus freshness with aromatic woods. Sophisticated, versatile, and effortlessly elegant for every occasion.",
+    fragranceFamily: "Fresh Woody",
+    topNotes: ["Grapefruit", "Lemon", "Mint"],
+    heartNotes: ["Ginger", "Nutmeg", "Jasmine"],
+    baseNotes: ["Incense", "Cedarwood", "Sandalwood", "Patchouli"],
+    perfectFor: ["Office Wear", "Formal Events", "Daily Use", "All Seasons"],
+    performance: ["Excellent Longevity", "Strong Projection", "Versatile Crowd-Pleaser"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#4078D4",
   },
 
   {
@@ -214,9 +290,17 @@ export const products = [
     inspiration: "Dior Sauvage",
     notes: "Bergamot • Pepper • Ambroxan",
     description:
-      "Fresh, spicy and universally loved masculine fragrance.",
-    image: "/pc.jpg",
+      "A fresh and powerful fragrance inspired by wide-open landscapes and raw masculinity. Bright bergamot opens the scent before aromatic spices and ambroxan create an unmistakable modern trail.",
+    fragranceFamily: "Fresh Spicy",
+    topNotes: ["Calabrian Bergamot", "Pepper"],
+    heartNotes: ["Lavender", "Pink Pepper", "Patchouli"],
+    baseNotes: ["Ambroxan", "Cedarwood", "Labdanum"],
+    perfectFor: ["Daily Wear", "Office Use", "Date Nights", "All Seasons"],
+    performance: ["Long Lasting", "Strong Projection", "Mass Appeal Champion"],
+    image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#4285F4",
+    soldOut: true,
   },
 
   {
@@ -228,8 +312,10 @@ export const products = [
     notes: "Bergamot • Lavender • Sandalwood",
     description:
       "A timeless masculine classic — fresh bergamot and grapefruit open into a warm lavender and sage heart, settling into a rich base of sandalwood, white musk, and patchouli.",
+    fragranceFamily: "Aromatic Fougère",
     image: "/phb.png",
     modalImage: "/ph.png",
+    themeColor: "#3A80C9",
   },
 
   // =====================
@@ -244,9 +330,16 @@ export const products = [
     inspiration: "Gucci Flora",
     notes: "Peony • Rose • Citrus",
     description:
-      "Elegant floral fragrance with feminine charm.",
+      "A graceful and radiant floral fragrance inspired by the beauty of a blooming garden. Sparkling citrus and delicate peony create a fresh, feminine opening, while a luxurious bouquet of rose and osmanthus blooms at the heart. Warm sandalwood and patchouli leave behind a soft and elegant trail that feels effortlessly beautiful.",
+    fragranceFamily: "Fresh Floral",
+    topNotes: ["Citrus Accord", "Peony", "Mandarin Orange"],
+    heartNotes: ["Rose", "Osmanthus"],
+    baseNotes: ["Sandalwood", "Patchouli", "Pink Pepper"],
+    perfectFor: ["Daily Wear", "Spring & Summer", "Brunch & Gatherings", "Feminine Signature Scent"],
+    performance: ["Long Lasting", "Moderate Projection", "Elegant Floral Trail"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#D4688A",
   },
 
   {
@@ -257,9 +350,16 @@ export const products = [
     inspiration: "Carolina Herrera Good Girl",
     notes: "Jasmine • Tonka Bean • Cocoa",
     description:
-      "A seductive and sophisticated feminine fragrance.",
+      "A bold and sophisticated fragrance that celebrates confidence and femininity. Bright almond and coffee accords create an addictive opening, followed by elegant jasmine and tuberose. The fragrance dries down into creamy tonka bean, cacao, and vanilla for a seductive and unforgettable finish.",
+    fragranceFamily: "Oriental Floral",
+    topNotes: ["Almond", "Coffee", "Bergamot", "Lemon"],
+    heartNotes: ["Jasmine Sambac", "Tuberose", "Orange Blossom"],
+    baseNotes: ["Tonka Bean", "Cacao", "Vanilla", "Sandalwood"],
+    perfectFor: ["Date Nights", "Evening Events", "Parties", "Autumn & Winter"],
+    performance: ["Long Lasting", "Strong Projection", "Rich & Seductive"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#5073D4",
   },
 
   {
@@ -270,9 +370,16 @@ export const products = [
     inspiration: "Yves Saint Laurent Libre",
     notes: "Lavender • Orange Blossom • Vanilla",
     description:
-      "Modern floral fragrance with freedom and confidence.",
+      "A fearless and modern fragrance that balances freshness with sensual warmth. Lavender and mandarin create a vibrant opening before blooming into luminous orange blossom and jasmine. A smooth base of Madagascar vanilla, musk, and cedarwood leaves a powerful feminine signature.",
+    fragranceFamily: "Floral Aromatic",
+    topNotes: ["Lavender", "Mandarin Orange", "Blackcurrant"],
+    heartNotes: ["Orange Blossom", "Jasmine"],
+    baseNotes: ["Vanilla", "Cedarwood", "Musk", "Ambergris"],
+    perfectFor: ["Everyday Luxury", "Office Wear", "Date Nights", "All Seasons"],
+    performance: ["Excellent Longevity", "Strong Projection", "Modern Feminine Elegance"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#C4972A",
   },
 
   {
@@ -283,9 +390,16 @@ export const products = [
     inspiration: "Yves Saint Laurent Black Opium",
     notes: "Coffee • Vanilla • White Flowers",
     description:
-      "Bold, addictive and sensual fragrance.",
+      "An addictive gourmand fragrance that combines dark coffee with sweet vanilla and white florals. Energetic and seductive from the first spray, it delivers a rich and captivating scent trail that commands attention.",
+    fragranceFamily: "Oriental Gourmand",
+    topNotes: ["Pink Pepper", "Pear", "Orange Blossom"],
+    heartNotes: ["Coffee", "Jasmine", "Bitter Almond"],
+    baseNotes: ["Vanilla", "Patchouli", "Cedarwood", "Cashmere Wood"],
+    perfectFor: ["Night Out", "Date Nights", "Parties", "Autumn & Winter"],
+    performance: ["Long Lasting", "Strong Projection", "Sweet & Addictive"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#9B44B8",
   },
 
   {
@@ -296,9 +410,16 @@ export const products = [
     inspiration: "Chanel Coco Mademoiselle",
     notes: "Orange • Rose • Patchouli",
     description:
-      "Timeless and elegant feminine fragrance.",
+      "A timeless and elegant fragrance that radiates sophistication. Sparkling citrus opens the scent before a beautiful floral heart unfolds. Warm patchouli and vanilla create a refined and luxurious finish.",
+    fragranceFamily: "Chypre Floral",
+    topNotes: ["Orange", "Bergamot", "Mandarin"],
+    heartNotes: ["Rose", "Jasmine", "Ylang-Ylang"],
+    baseNotes: ["Patchouli", "Vanilla", "White Musk", "Vetiver"],
+    perfectFor: ["Office Wear", "Formal Events", "Daily Luxury", "All Seasons"],
+    performance: ["Long Lasting", "Moderate to Strong Projection", "Elegant & Refined"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#C4394A",
   },
 
   {
@@ -327,9 +448,16 @@ export const products = [
     inspiration: "Yusuf Bhai Signature Creation",
     notes: "Oud • Rose • Amber",
     description:
-      "Luxurious oud fragrance suitable for both men and women.",
+      "An opulent and mysterious oud creation crafted for those who appreciate luxury and distinction. Rich woody accords blend with precious spices and smoky nuances, unveiling a heart of warm amber and rose before settling into a powerful base of oud, sandalwood, and musk.",
+    fragranceFamily: "Oriental Woody",
+    topNotes: ["Saffron", "Spices", "Woody Notes"],
+    heartNotes: ["Rose", "Amber", "Incense"],
+    baseNotes: ["Oud", "Musk", "Sandalwood"],
+    perfectFor: ["Evening Wear", "Formal Events", "Special Occasions", "Autumn & Winter"],
+    performance: ["Exceptional Longevity", "Strong Projection", "Luxurious Oud Signature"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#C4882A",
   },
 
   {
@@ -340,9 +468,16 @@ export const products = [
     inspiration: "Maison Francis Kurkdjian Baccarat Rouge 540",
     notes: "Saffron • Amberwood • Cedar",
     description:
-      "One of the world's most famous luxury fragrance inspirations.",
+      "An enchanting and luxurious fragrance known for its glowing amber sweetness. Airy saffron and jasmine merge with rich amberwood and cedar to create a scent that feels both ethereal and unforgettable.",
+    fragranceFamily: "Amber Floral",
+    topNotes: ["Saffron", "Jasmine"],
+    heartNotes: ["Amberwood", "Ambergris"],
+    baseNotes: ["Fir Resin", "Cedarwood"],
+    perfectFor: ["Luxury Occasions", "Evening Wear", "Signature Scent", "All Seasons"],
+    performance: ["Exceptional Longevity", "Powerful Projection", "Highly Complimented"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#C4682A",
   },
 
   {
@@ -353,22 +488,36 @@ export const products = [
     inspiration: "Louis Vuitton Pacific Chill",
     notes: "Mint • Lemon • Fruits",
     description:
-      "Refreshing and uplifting fragrance with vibrant energy.",
+      "A vibrant and uplifting fragrance inspired by the relaxing energy of the California coast. Juicy fruits and fresh herbs create an invigorating and refreshing experience.",
+    fragranceFamily: "Fresh Fruity",
+    topNotes: ["Citron", "Orange", "Mint"],
+    heartNotes: ["Apricot", "Blackcurrant", "Basil"],
+    baseNotes: ["Fig", "Dates", "Ambrette"],
+    perfectFor: ["Summer Days", "Vacations", "Casual Wear", "Daytime Activities"],
+    performance: ["Fresh Longevity", "Moderate Projection", "Bright & Refreshing"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#1AB894",
   },
 
   {
     id: 26,
-    name: "YB Ignitation 100ml",
+    name: "YB Imagination 100ml",
     category: "unisex",
     price: "৳5,400",
     inspiration: "Louis Vuitton Imagination",
     notes: "Amber • Woods • Spice",
     description:
-      "A bold and captivating signature scent.",
+      "A bright, imaginative fragrance inspired by endless creativity and optimism. Sparkling citrus blends with black tea and warm ambrox for a unique and uplifting signature.",
+    fragranceFamily: "Fresh Woody",
+    topNotes: ["Citron", "Bergamot", "Orange"],
+    heartNotes: ["Black Tea", "Neroli", "Ginger"],
+    baseNotes: ["Ambrox", "Incense", "Guaiac Wood"],
+    perfectFor: ["Daily Wear", "Office Use", "Summer & Spring", "Signature Scent"],
+    performance: ["Excellent Longevity", "Strong Projection", "Fresh & Modern"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#C47D2A",
   },
 
   {
@@ -379,8 +528,15 @@ export const products = [
     inspiration: "Nishane Wulong Cha",
     notes: "Tea • Citrus • Fig",
     description:
-      "Fresh, clean and sophisticated tea-based fragrance.",
+      "A refreshing tea-inspired fragrance that captures the serenity of a peaceful tea garden. Sparkling citrus blends with aromatic tea accords and soft musk for an exceptionally clean and uplifting experience.",
+    fragranceFamily: "Fresh Floral Woody",
+    topNotes: ["Bergamot", "Orange", "Mandarin"],
+    heartNotes: ["Oolong Tea", "Nutmeg"],
+    baseNotes: ["Musk", "Fig"],
+    perfectFor: ["Hot Weather", "Office Wear", "Daily Use", "Spring & Summer"],
+    performance: ["Moderate Longevity", "Fresh Projection", "Clean & Energizing"],
     image: "/bottle.png",
     modalImage: "/bottle.png",
+    themeColor: "#52BE7A",
   },
 ];

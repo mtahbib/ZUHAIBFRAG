@@ -299,20 +299,23 @@ export default function ProductModal({ product, onClose }) {
             {/* CTAs */}
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "28px" }}>
               <button
-                onClick={handleAddToCart}
+                onClick={product.soldOut ? undefined : handleAddToCart}
+                disabled={product.soldOut}
                 style={{
-                  background: added ? `rgba(${accentRgb},0.15)` : accent,
-                  color: added ? accent : "#000",
-                  border: added ? `1px solid ${accent}` : "none",
+                  background: product.soldOut ? "rgba(220,50,50,0.08)" : added ? `rgba(${accentRgb},0.15)` : accent,
+                  color: product.soldOut ? "#E05555" : added ? accent : "#000",
+                  border: product.soldOut ? "1px solid rgba(220,50,50,0.35)" : added ? `1px solid ${accent}` : "none",
                   padding: "16px", borderRadius: "999px",
                   fontWeight: 700, fontSize: "11px", letterSpacing: "4px",
                   fontFamily: "'Montserrat', sans-serif",
-                  cursor: "pointer", transition: "all 0.35s ease", width: "100%",
+                  cursor: product.soldOut ? "not-allowed" : "pointer",
+                  transition: "all 0.35s ease", width: "100%",
+                  opacity: product.soldOut ? 0.8 : 1,
                 }}
-                onMouseEnter={(e) => { if (!added) e.currentTarget.style.background = "#fff"; }}
-                onMouseLeave={(e) => { if (!added) e.currentTarget.style.background = accent; }}
+                onMouseEnter={(e) => { if (!added && !product.soldOut) e.currentTarget.style.background = "#fff"; }}
+                onMouseLeave={(e) => { if (!added && !product.soldOut) e.currentTarget.style.background = accent; }}
               >
-                {added ? "ADDED TO CART ✓" : "ADD TO CART"}
+                {product.soldOut ? "CURRENTLY UNAVAILABLE" : added ? "ADDED TO CART ✓" : "ADD TO CART"}
               </button>
 
               <a

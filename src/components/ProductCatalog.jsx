@@ -472,23 +472,25 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
             VIEW DETAILS
           </button>
           <button
-            onClick={() => handleCart(product)}
+            onClick={product.soldOut ? undefined : () => handleCart(product)}
+            disabled={product.soldOut}
             style={{
-              background: addedId === product.id ? "rgba(212,175,55,0.12)" : "#D4AF37",
-              color: addedId === product.id ? "#D4AF37" : "#000",
-              border: "1px solid rgba(212,175,55,0.38)",
+              background: product.soldOut ? "rgba(220,50,50,0.08)" : addedId === product.id ? "rgba(212,175,55,0.12)" : "#D4AF37",
+              color: product.soldOut ? "#E05555" : addedId === product.id ? "#D4AF37" : "#000",
+              border: `1px solid ${product.soldOut ? "rgba(220,50,50,0.3)" : "rgba(212,175,55,0.38)"}`,
               padding: "12px 28px",
               borderRadius: "999px",
-              cursor: "pointer",
+              cursor: product.soldOut ? "not-allowed" : "pointer",
               fontSize: "9px",
               letterSpacing: "3px",
               fontFamily: "'Montserrat', sans-serif",
               fontWeight: 700,
               transition: "all 0.3s ease",
               whiteSpace: "nowrap",
+              opacity: product.soldOut ? 0.7 : 1,
             }}
           >
-            {addedId === product.id ? "ADDED ✓" : "+ CART"}
+            {product.soldOut ? "SOLD OUT" : addedId === product.id ? "ADDED ✓" : "+ CART"}
           </button>
         </div>
       </div>
@@ -587,6 +589,18 @@ function TiltCard({ product, onSelect }) {
           {product.category}
         </div>
 
+        {product.soldOut && (
+          <div style={{
+            position: "absolute", top: "14px", right: "14px",
+            background: "rgba(220,50,50,0.12)", border: "1px solid rgba(220,50,50,0.4)",
+            color: "#E05555", fontSize: "7px", letterSpacing: "2px",
+            padding: "4px 10px", borderRadius: "999px",
+            fontFamily: "'Montserrat', sans-serif", fontWeight: 700, textTransform: "uppercase",
+          }}>
+            SOLD OUT
+          </div>
+        )}
+
         <div style={{
           width: "300px", maxWidth: "90%",
           height: "300px",
@@ -644,19 +658,21 @@ function TiltCard({ product, onSelect }) {
             DETAILS
           </button>
           <button
-            onClick={handleAddToCart}
+            onClick={product.soldOut ? undefined : handleAddToCart}
             data-cursor="ADD"
+            disabled={product.soldOut}
             style={{
-              background: added ? "rgba(212,175,55,0.2)" : hov ? "#D4AF37" : "transparent",
-              color: added ? "#D4AF37" : hov ? "#000" : "#D4AF37",
-              border: "1px solid rgba(212,175,55,0.35)",
-              padding: "10px 18px", borderRadius: "999px", cursor: "pointer",
+              background: product.soldOut ? "rgba(220,50,50,0.08)" : added ? "rgba(212,175,55,0.2)" : hov ? "#D4AF37" : "transparent",
+              color: product.soldOut ? "#E05555" : added ? "#D4AF37" : hov ? "#000" : "#D4AF37",
+              border: `1px solid ${product.soldOut ? "rgba(220,50,50,0.3)" : "rgba(212,175,55,0.35)"}`,
+              padding: "10px 18px", borderRadius: "999px",
+              cursor: product.soldOut ? "not-allowed" : "pointer",
               fontWeight: 700, fontSize: "9px", letterSpacing: "2px",
               fontFamily: "'Montserrat', sans-serif", transition: "all 0.3s ease",
-              whiteSpace: "nowrap",
+              whiteSpace: "nowrap", opacity: product.soldOut ? 0.7 : 1,
             }}
           >
-            {added ? "ADDED ✓" : "+ CART"}
+            {product.soldOut ? "SOLD OUT" : added ? "ADDED ✓" : "+ CART"}
           </button>
         </div>
       </div>
