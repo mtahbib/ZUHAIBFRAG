@@ -223,7 +223,7 @@ export default function BestSellers() {
               fontWeight: 300,
             }}
           >
-            Yusuf Bhai Collection
+            Original Inspiration
           </h2>
           <p
             style={{

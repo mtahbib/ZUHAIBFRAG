@@ -2,12 +2,21 @@ import { useEffect, useRef, useState } from "react";
 import useIsMobile from "../hooks/useIsMobile";
 import { useCart } from "../context/CartContext";
 
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `${r},${g},${b}`;
+}
+
 export default function ProductModal({ product, onClose }) {
   const isMobile = useIsMobile();
   const modalRef = useRef(null);
-  const [hovBtn, setHovBtn] = useState(false);
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
+
+  const accent    = product?.themeColor || "#D4AF37";
+  const accentRgb = product?.themeColor ? hexToRgb(product.themeColor) : "212,175,55";
 
   const handleAddToCart = () => {
     addItem(product);
@@ -15,7 +24,6 @@ export default function ProductModal({ product, onClose }) {
     setTimeout(() => setAdded(false), 1800);
   };
 
-  // Close on Escape
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
@@ -24,28 +32,44 @@ export default function ProductModal({ product, onClose }) {
 
   if (!product) return null;
 
-  const notePills = product.notes
-    .split(/[•,]/)
-    .map((n) => n.trim())
-    .filter(Boolean);
+  // Use structured notes if available, else parse from notes string
+  const hasStructuredNotes = product.topNotes || product.heartNotes || product.baseNotes;
+  const simplePills = hasStructuredNotes ? [] : product.notes.split(/[•,]/).map((n) => n.trim()).filter(Boolean);
 
   const whatsappMessage = encodeURIComponent(
     `Assalamu Alaikum,\n\nI would like to order:\n\n${product.name}\nPrice: ${product.price}\n\nPlease provide availability.`
   );
 
+  const pillStyle = {
+    background: `rgba(${accentRgb},0.08)`,
+    border: `1px solid rgba(${accentRgb},0.25)`,
+    color: accent,
+    padding: "4px 12px",
+    borderRadius: "999px",
+    fontSize: "10px",
+    fontFamily: "'Montserrat', sans-serif",
+    fontWeight: 400,
+    letterSpacing: "1px",
+  };
+
+  const labelStyle = {
+    color: "rgba(255,255,255,0.25)",
+    fontSize: "8px",
+    letterSpacing: "4px",
+    fontFamily: "'Montserrat', sans-serif",
+    fontWeight: 600,
+    marginBottom: "8px",
+  };
+
   return (
     <div
       onClick={onClose}
       style={{
-        position: "fixed",
-        inset: 0,
+        position: "fixed", inset: 0,
         background: "rgba(0,0,0,0.88)",
         backdropFilter: "blur(12px)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 99999,
-        padding: "20px",
+        display: "flex", justifyContent: "center", alignItems: "center",
+        zIndex: 99999, padding: "20px",
       }}
     >
       <div
@@ -55,228 +79,238 @@ export default function ProductModal({ product, onClose }) {
           width: "100%",
           maxWidth: isMobile ? "100%" : "1080px",
           maxHeight: "92vh",
-          overflowX: "hidden",
-          overflowY: "auto",
+          overflowX: "hidden", overflowY: "auto",
           background: "linear-gradient(135deg, #0d0d0d 0%, #111 100%)",
           borderRadius: isMobile ? "20px" : "28px",
-          border: "1px solid rgba(212,175,55,0.25)",
-          boxShadow:
-            "0 0 80px rgba(212,175,55,0.08), 0 40px 120px rgba(0,0,0,0.6)",
+          border: `1px solid rgba(${accentRgb},0.25)`,
+          boxShadow: `0 0 80px rgba(${accentRgb},0.1), 0 40px 120px rgba(0,0,0,0.6)`,
           animation: "float-up 0.45s cubic-bezier(0.16,1,0.3,1) forwards",
           position: "relative",
         }}
       >
-        {/* Top gradient accent line */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "1px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent)",
-          }}
-        />
+        {/* Top accent line */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+          background: `linear-gradient(90deg, transparent, rgba(${accentRgb},0.7), transparent)`,
+        }} />
 
-        {/* Close button */}
+        {/* Close */}
         <button
           onClick={onClose}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#D4AF37")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = accent)}
           onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}
           style={{
-            position: "absolute",
-            top: "20px",
-            right: "22px",
-            background: "none",
-            border: "none",
-            color: "rgba(255,255,255,0.35)",
-            fontSize: "22px",
-            cursor: "pointer",
-            lineHeight: 1,
-            transition: "color 0.3s ease",
-            zIndex: 2,
+            position: "absolute", top: "20px", right: "22px",
+            background: "none", border: "none",
+            color: "rgba(255,255,255,0.35)", fontSize: "22px",
+            cursor: "pointer", lineHeight: 1, transition: "color 0.3s ease", zIndex: 2,
           }}
-        >
-          ✕
-        </button>
+        >✕</button>
 
-        {/* Two-column layout */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1.4fr",
-            minHeight: isMobile ? "auto" : "540px",
-          }}
-        >
-          {/* Left — image panel */}
-          <div
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(212,175,55,0.07) 0%, transparent 70%)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: isMobile ? "40px 28px 24px" : "60px 40px",
-              borderRight: isMobile ? "none" : "1px solid rgba(212,175,55,0.1)",
-              borderBottom: isMobile ? "1px solid rgba(212,175,55,0.1)" : "none",
-              position: "relative",
-            }}
-          >
+        {/* Layout */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1.4fr",
+          minHeight: isMobile ? "auto" : "540px",
+        }}>
+          {/* Left — image */}
+          <div style={{
+            background: `radial-gradient(circle at center, rgba(${accentRgb},0.08) 0%, transparent 70%)`,
+            display: "flex", flexDirection: "column",
+            justifyContent: "center", alignItems: "center",
+            padding: isMobile ? "40px 28px 24px" : "60px 40px",
+            borderRight: isMobile ? "none" : `1px solid rgba(${accentRgb},0.12)`,
+            borderBottom: isMobile ? `1px solid rgba(${accentRgb},0.12)` : "none",
+            position: "relative",
+          }}>
             {/* Category badge */}
-            <div
-              style={{
-                position: "absolute",
-                top: "22px",
-                left: "22px",
-                background: "rgba(212,175,55,0.1)",
-                border: "1px solid rgba(212,175,55,0.25)",
-                color: "#D4AF37",
-                fontSize: "8px",
-                letterSpacing: "3px",
-                padding: "5px 12px",
-                borderRadius: "999px",
-                fontFamily: "'Montserrat', sans-serif",
-                fontWeight: 600,
-                textTransform: "uppercase",
-              }}
-            >
+            <div style={{
+              position: "absolute", top: "22px", left: "22px",
+              background: `rgba(${accentRgb},0.1)`,
+              border: `1px solid rgba(${accentRgb},0.3)`,
+              color: accent, fontSize: "8px", letterSpacing: "3px",
+              padding: "5px 12px", borderRadius: "999px",
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 600, textTransform: "uppercase",
+            }}>
               {product.category}
             </div>
 
+            {/* Fragrance family badge */}
+            {product.fragranceFamily && (
+              <div style={{
+                position: "absolute", top: "22px", right: "22px",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "rgba(255,255,255,0.3)", fontSize: "7px", letterSpacing: "2px",
+                padding: "5px 10px", borderRadius: "999px",
+                fontFamily: "'Montserrat', sans-serif", fontWeight: 400,
+              }}>
+                {product.fragranceFamily}
+              </div>
+            )}
+
             <img
-              src={product.image}
+              src={product.modalImage || product.image}
               alt={product.name}
               style={{
-                width: "280px",
-                maxWidth: "88%",
-                filter:
-                  "drop-shadow(0 0 70px rgba(212,175,55,0.45)) drop-shadow(0 0 20px rgba(212,175,55,0.18))",
+                width: "280px", maxWidth: "88%",
+                filter: `drop-shadow(0 0 70px rgba(${accentRgb},0.45)) drop-shadow(0 0 20px rgba(${accentRgb},0.18))`,
               }}
             />
 
-            {/* Price below image */}
-            <div
-              style={{
-                marginTop: "28px",
-                color: "#D4AF37",
-                fontSize: "2.2rem",
-                fontFamily: "'Cormorant Garamond', serif",
-                fontWeight: 400,
-                letterSpacing: "1px",
-              }}
-            >
+            <div style={{
+              marginTop: "28px", color: accent,
+              fontSize: "2.2rem", fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 400, letterSpacing: "1px",
+            }}>
               {product.price}
             </div>
+
+            {/* Tagline */}
+            {product.tagline && (
+              <div style={{
+                marginTop: "12px",
+                color: `rgba(${accentRgb},0.55)`,
+                fontSize: "9px", letterSpacing: "2px",
+                fontFamily: "'Cormorant Garamond', serif",
+                fontStyle: "italic", textAlign: "center",
+              }}>
+                "{product.tagline}"
+              </div>
+            )}
           </div>
 
-          {/* Right — details panel */}
-          <div
-            style={{
-              padding: isMobile ? "30px 28px 36px" : "60px 54px 54px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: "0",
-            }}
-          >
-            {/* Product name */}
-            <h2
-              style={{
-                color: "#fff",
-                fontSize: "clamp(1.8rem, 3vw, 2.8rem)",
-                fontFamily: "'Cormorant Garamond', serif",
-                fontWeight: 400,
-                lineHeight: 1.2,
-                margin: 0,
-                paddingRight: "30px",
-              }}
-            >
+          {/* Right — details */}
+          <div style={{
+            padding: isMobile ? "30px 28px 36px" : "50px 48px 50px",
+            display: "flex", flexDirection: "column",
+            justifyContent: "center", gap: "0",
+            overflowY: "auto",
+          }}>
+            <h2 style={{
+              color: "#fff", fontSize: "clamp(1.8rem, 3vw, 2.8rem)",
+              fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 400, lineHeight: 1.2, margin: 0, paddingRight: "30px",
+            }}>
               {product.name}
             </h2>
 
-            {/* Gold divider */}
-            <div
-              style={{
-                width: "45px",
-                height: "1px",
-                background: "linear-gradient(90deg, #D4AF37, transparent)",
-                margin: "20px 0",
-              }}
-            />
+            <div style={{
+              width: "45px", height: "1px",
+              background: `linear-gradient(90deg, ${accent}, transparent)`,
+              margin: "18px 0",
+            }} />
 
-            {/* Description */}
-            <p
-              style={{
-                color: "rgba(255,255,255,0.45)",
-                fontSize: "13px",
-                fontFamily: "'Montserrat', sans-serif",
-                fontWeight: 300,
-                lineHeight: "2",
-                letterSpacing: "0.5px",
-                margin: 0,
-              }}
-            >
+            {product.inspiration && (
+              <div style={{ marginBottom: "16px" }}>
+                <div style={labelStyle}>ORIGINAL INSPIRATION</div>
+                <div style={{
+                  color: `rgba(${accentRgb},0.7)`,
+                  fontSize: "11px",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontWeight: 400,
+                  letterSpacing: "0.5px",
+                }}>
+                  {product.inspiration}
+                </div>
+              </div>
+            )}
+
+            <p style={{
+              color: "rgba(255,255,255,0.45)", fontSize: "12px",
+              fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
+              lineHeight: "2", letterSpacing: "0.4px", margin: 0,
+            }}>
               {product.description}
             </p>
 
-            {/* Notes section */}
-            <div style={{ marginTop: "24px" }}>
-              <div
-                style={{
-                  color: "rgba(255,255,255,0.25)",
-                  fontSize: "8px",
-                  letterSpacing: "4px",
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontWeight: 600,
-                  marginBottom: "12px",
-                }}
-              >
-                FRAGRANCE NOTES
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                {notePills.map((note) => (
-                  <span
-                    key={note}
-                    style={{
-                      background: "rgba(212,175,55,0.08)",
-                      border: "1px solid rgba(212,175,55,0.2)",
-                      color: "rgba(212,175,55,0.85)",
-                      padding: "5px 14px",
-                      borderRadius: "999px",
-                      fontSize: "10px",
-                      fontFamily: "'Montserrat', sans-serif",
-                      fontWeight: 400,
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    {note}
-                  </span>
+            {/* Structured top/heart/base notes */}
+            {hasStructuredNotes && (
+              <div style={{ marginTop: "22px", display: "flex", flexDirection: "column", gap: "14px" }}>
+                <div style={labelStyle}>FRAGRANCE NOTES</div>
+                {[
+                  { tier: "TOP", notes: product.topNotes },
+                  { tier: "HEART", notes: product.heartNotes },
+                  { tier: "BASE", notes: product.baseNotes },
+                ].map(({ tier, notes }) => notes?.length > 0 && (
+                  <div key={tier} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                    <div style={{
+                      color: `rgba(${accentRgb},0.5)`, fontSize: "7px",
+                      letterSpacing: "3px", fontFamily: "'Montserrat', sans-serif",
+                      fontWeight: 600, paddingTop: "5px", minWidth: "32px",
+                    }}>{tier}</div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                      {notes.map((n) => <span key={n} style={pillStyle}>{n}</span>)}
+                    </div>
+                  </div>
                 ))}
               </div>
-            </div>
+            )}
 
-            {/* CTA */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "32px" }}>
+            {/* Simple pills fallback */}
+            {!hasStructuredNotes && simplePills.length > 0 && (
+              <div style={{ marginTop: "22px" }}>
+                <div style={labelStyle}>FRAGRANCE NOTES</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {simplePills.map((n) => <span key={n} style={pillStyle}>{n}</span>)}
+                </div>
+              </div>
+            )}
+
+            {/* Perfect For */}
+            {product.perfectFor?.length > 0 && (
+              <div style={{ marginTop: "18px" }}>
+                <div style={labelStyle}>PERFECT FOR</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  {product.perfectFor.map((item) => (
+                    <span key={item} style={{
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      color: "rgba(255,255,255,0.45)",
+                      padding: "4px 12px", borderRadius: "999px",
+                      fontSize: "9px", fontFamily: "'Montserrat', sans-serif",
+                      letterSpacing: "1px",
+                    }}>{item}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Performance */}
+            {product.performance?.length > 0 && (
+              <div style={{ marginTop: "18px" }}>
+                <div style={labelStyle}>PERFORMANCE</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                  {product.performance.map((item) => (
+                    <div key={item} style={{
+                      color: "rgba(255,255,255,0.38)", fontSize: "10px",
+                      fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
+                      letterSpacing: "0.5px", display: "flex", alignItems: "center", gap: "8px",
+                    }}>
+                      <span style={{ color: accent, fontSize: "6px" }}>◆</span>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* CTAs */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "28px" }}>
               <button
                 onClick={handleAddToCart}
                 style={{
-                  background: added ? "rgba(212,175,55,0.15)" : "#D4AF37",
-                  color: added ? "#D4AF37" : "#000",
-                  border: added ? "1px solid #D4AF37" : "none",
-                  padding: "16px",
-                  borderRadius: "999px",
-                  fontWeight: 700,
-                  fontSize: "11px",
-                  letterSpacing: "4px",
+                  background: added ? `rgba(${accentRgb},0.15)` : accent,
+                  color: added ? accent : "#000",
+                  border: added ? `1px solid ${accent}` : "none",
+                  padding: "16px", borderRadius: "999px",
+                  fontWeight: 700, fontSize: "11px", letterSpacing: "4px",
                   fontFamily: "'Montserrat', sans-serif",
-                  cursor: "pointer",
-                  transition: "all 0.35s ease",
-                  width: "100%",
+                  cursor: "pointer", transition: "all 0.35s ease", width: "100%",
                 }}
                 onMouseEnter={(e) => { if (!added) e.currentTarget.style.background = "#fff"; }}
-                onMouseLeave={(e) => { if (!added) e.currentTarget.style.background = "#D4AF37"; }}
+                onMouseLeave={(e) => { if (!added) e.currentTarget.style.background = accent; }}
               >
                 {added ? "ADDED TO CART ✓" : "ADD TO CART"}
               </button>
@@ -286,17 +320,12 @@ export default function ProductModal({ product, onClose }) {
                 target="_blank"
                 rel="noreferrer"
                 style={{
-                  display: "block",
-                  textAlign: "center",
-                  background: "transparent",
-                  color: "rgba(255,255,255,0.4)",
+                  display: "block", textAlign: "center",
+                  background: "transparent", color: "rgba(255,255,255,0.4)",
                   border: "1px solid rgba(255,255,255,0.1)",
-                  padding: "14px",
-                  borderRadius: "999px",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  fontSize: "10px",
-                  letterSpacing: "3px",
+                  padding: "14px", borderRadius: "999px",
+                  textDecoration: "none", fontWeight: 500,
+                  fontSize: "10px", letterSpacing: "3px",
                   fontFamily: "'Montserrat', sans-serif",
                   transition: "all 0.35s ease",
                 }}

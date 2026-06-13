@@ -587,17 +587,25 @@ function TiltCard({ product, onSelect }) {
           {product.category}
         </div>
 
-        <img
-          src={product.image}
-          alt={product.name}
-          style={{
-            width: "300px", maxWidth: "90%",
-            marginTop: "24px", marginBottom: "24px",
-            filter: "drop-shadow(0 0 50px rgba(212,175,55,0.32))",
-            transform: hov ? "translateY(-10px)" : "translateY(0)",
-            transition: "transform 0.4s ease",
-          }}
-        />
+        <div style={{
+          width: "300px", maxWidth: "90%",
+          height: "300px",
+          marginTop: "24px", marginBottom: "24px",
+          marginLeft: "auto", marginRight: "auto",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transform: hov ? "translateY(-10px)" : "translateY(0)",
+          transition: "transform 0.4s ease",
+        }}>
+          <img
+            src={product.image}
+            alt={product.name}
+            style={{
+              width: "100%", height: "100%",
+              objectFit: "contain",
+              filter: "drop-shadow(0 0 50px rgba(212,175,55,0.32))",
+            }}
+          />
+        </div>
 
         <h3 style={{
           color: "#fff", marginBottom: "6px",

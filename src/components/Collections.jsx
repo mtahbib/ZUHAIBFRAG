@@ -9,21 +9,21 @@ gsap.registerPlugin(ScrollTrigger);
 const COLLECTIONS = [
   {
     title: "Male",
-    count: "16 Fragrances",
+    count: "17 Fragrances",
     icon: "♂",
-    products: ["Ultra Male", "Le Male Elixir", "Sauvage Elixir", "Aventus Absolut"],
+    products: ["Ultra Male", "Le Male Elixir", "Sauvage Elixir", "Pour Homme"],
     category: "male",
   },
   {
     title: "Female",
     count: "6 Fragrances",
     icon: "♀",
-    products: ["Good Girl", "Libre", "Black Opium", "Coco Mademoiselle"],
+    products: ["Pour Femme", "Flora", "Good Girl", "Black Opium"],
     category: "female",
   },
   {
     title: "Unisex",
-    count: "5 Fragrances",
+    count: "9 Fragrances",
     icon: "◈",
     products: ["Baccarat Rouge 540", "Pacific Chill", "Wulong Cha", "French Oud"],
     category: "unisex",
