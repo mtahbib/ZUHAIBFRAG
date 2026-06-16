@@ -300,7 +300,6 @@ export const products = [
     image: "/bottle.png",
     modalImage: "/bottle.png",
     themeColor: "#4285F4",
-    soldOut: true,
   },
 
   {
@@ -539,4 +538,5 @@ export const products = [
     modalImage: "/bottle.png",
     themeColor: "#52BE7A",
   },
+
 ];
