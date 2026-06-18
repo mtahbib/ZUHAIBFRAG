@@ -204,7 +204,7 @@ export const products = [
 
   {
     id: 11,
-    name: "YB Oud Wood 50ml",
+    name: "YB Oud Wood ",
     category: "male",
     price: "৳3,250",
     inspiration: "Tom Ford Oud Wood",
