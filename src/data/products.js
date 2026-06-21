@@ -4,6 +4,11 @@ export const products = [
     name: "YB Ultra Male 100ml",
     category: "male",
     price: "৳4,100",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Jean Paul Gaultier Ultra Male",
     notes: "Pear • Cinnamon • Black Vanilla",
     description:
@@ -25,6 +30,11 @@ export const products = [
     name: "YB Le Male Elixir 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Jean Paul Gaultier Le Male Elixir",
     notes: "Mint • Vanilla • Honey",
     description:
@@ -46,6 +56,11 @@ export const products = [
     name: "YB Allure Homme Sport 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳299" },
+      { size: "10ml", price: "৳549" },
+      { size: "15ml", price: "৳799" },
+    ],
     inspiration: "Chanel Allure Homme Sport",
     notes: "Orange • Cedar • Tonka Bean",
     description:
@@ -67,6 +82,11 @@ export const products = [
     name: "YB Eros Versace Men 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Versace Eros",
     notes: "Mint • Apple • Vanilla",
     description:
@@ -87,6 +107,11 @@ export const products = [
     name: "YB Layton 100ml",
     category: "male",
     price: "৳5,100",
+    decants: [
+      { size: "5ml", price: "৳419" },
+      { size: "10ml", price: "৳789" },
+      { size: "15ml", price: "৳1,099" },
+    ],
     inspiration: "Parfums de Marly Layton",
     notes: "Apple • Vanilla • Cardamom",
     description:
@@ -107,6 +132,11 @@ export const products = [
     name: "YB One Million 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Paco Rabanne 1 Million",
     notes: "Blood Mandarin • Cinnamon • Leather",
     description:
@@ -127,6 +157,11 @@ export const products = [
     name: "YB Aqua Di Gio Profumo 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳299" },
+      { size: "10ml", price: "৳549" },
+      { size: "15ml", price: "৳799" },
+    ],
     inspiration: "Giorgio Armani Acqua di Giò Profumo",
     notes: "Sea Notes • Incense • Patchouli",
     description:
@@ -147,6 +182,11 @@ export const products = [
     name: "YB Aqua Di Gio 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳299" },
+      { size: "10ml", price: "৳549" },
+      { size: "15ml", price: "৳799" },
+    ],
     inspiration: "Giorgio Armani Acqua di Giò",
     notes: "Bergamot • Marine Notes • Cedar",
     description:
@@ -167,6 +207,11 @@ export const products = [
     name: "YB Ombre Leather 100ml",
     category: "male",
     price: "৳4,100",
+    decants: [
+      { size: "5ml", price: "৳349" },
+      { size: "10ml", price: "৳669" },
+      { size: "15ml", price: "৳899" },
+    ],
     inspiration: "Tom Ford Ombre Leather",
     notes: "Leather • Jasmine • Amber",
     description:
@@ -187,6 +232,11 @@ export const products = [
     name: "YB Tobacco Vanille 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳299" },
+      { size: "10ml", price: "৳549" },
+      { size: "15ml", price: "৳799" },
+    ],
     inspiration: "Tom Ford Tobacco Vanille",
     notes: "Tobacco • Vanilla • Dried Fruits",
     description:
@@ -207,6 +257,11 @@ export const products = [
     name: "YB Oud Wood ",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳349" },
+      { size: "10ml", price: "৳669" },
+      { size: "15ml", price: "৳899" },
+    ],
     inspiration: "Tom Ford Oud Wood",
     notes: "Oud • Sandalwood • Cardamom",
     description:
@@ -227,6 +282,11 @@ export const products = [
     name: "YB Sauvage Elixir 100ml",
     category: "male",
     price: "৳4,100",
+    decants: [
+      { size: "5ml", price: "৳349" },
+      { size: "10ml", price: "৳669" },
+      { size: "15ml", price: "৳899" },
+    ],
     inspiration: "Dior Sauvage Elixir",
     notes: "Cinnamon • Nutmeg • Lavender",
     description:
@@ -247,6 +307,11 @@ export const products = [
     name: "YB Aventus Absolut 100ml",
     category: "male",
     price: "৳5,100",
+    decants: [
+      { size: "5ml", price: "৳419" },
+      { size: "10ml", price: "৳789" },
+      { size: "15ml", price: "৳1,099" },
+    ],
     inspiration: "Creed Absolu Aventus",
     notes: "Pineapple • Blackcurrant • Woods",
     description:
@@ -267,6 +332,11 @@ export const products = [
     name: "YB Bleu De 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳299" },
+      { size: "10ml", price: "৳549" },
+      { size: "15ml", price: "৳799" },
+    ],
     inspiration: "Bleu de Chanel",
     notes: "Grapefruit • Incense • Cedar",
     description:
@@ -287,6 +357,11 @@ export const products = [
     name: "YB Sauvage 100ml",
     category: "male",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳299" },
+      { size: "10ml", price: "৳549" },
+      { size: "15ml", price: "৳799" },
+    ],
     inspiration: "Dior Sauvage",
     notes: "Bergamot • Pepper • Ambroxan",
     description:
@@ -307,6 +382,11 @@ export const products = [
     name: "YB Pour Homme 100ml",
     category: "male",
     price: "৳4,100",
+    decants: [
+      { size: "5ml", price: "৳349" },
+      { size: "10ml", price: "৳669" },
+      { size: "15ml", price: "৳899" },
+    ],
     inspiration: "Yusuf Bhai Signature Creation",
     notes: "Bergamot • Lavender • Sandalwood",
     description:
@@ -326,6 +406,11 @@ export const products = [
     name: "YB Flora 100ml",
     category: "female",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Gucci Flora",
     notes: "Peony • Rose • Citrus",
     description:
@@ -346,6 +431,11 @@ export const products = [
     name: "YB Good Girl 100ml",
     category: "female",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Carolina Herrera Good Girl",
     notes: "Jasmine • Tonka Bean • Cocoa",
     description:
@@ -366,6 +456,11 @@ export const products = [
     name: "YB Libre 100ml",
     category: "female",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Yves Saint Laurent Libre",
     notes: "Lavender • Orange Blossom • Vanilla",
     description:
@@ -386,6 +481,11 @@ export const products = [
     name: "YB Black Opium 100ml",
     category: "female",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Yves Saint Laurent Black Opium",
     notes: "Coffee • Vanilla • White Flowers",
     description:
@@ -406,6 +506,11 @@ export const products = [
     name: "YB Coco Mademoiselle 100ml",
     category: "female",
     price: "৳3,250",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Chanel Coco Mademoiselle",
     notes: "Orange • Rose • Patchouli",
     description:
@@ -426,6 +531,11 @@ export const products = [
     name: "YB Pour Femme 100ml",
     category: "female",
     price: "৳4,100",
+    decants: [
+      { size: "5ml", price: "৳349" },
+      { size: "10ml", price: "৳669" },
+      { size: "15ml", price: "৳899" },
+    ],
     inspiration: "Yusuf Bhai Signature Creation",
     notes: "Pear • Rose • Musk",
     description:
@@ -444,6 +554,11 @@ export const products = [
     name: "YB French Oud 50ml",
     category: "unisex",
     price: "৳2,500",
+    decants: [
+      { size: "5ml", price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
     inspiration: "Yusuf Bhai Signature Creation",
     notes: "Oud • Rose • Amber",
     description:
@@ -464,6 +579,11 @@ export const products = [
     name: "YB Baccarat Rouge 540 100ml",
     category: "unisex",
     price: "৳5,100",
+    decants: [
+      { size: "5ml", price: "৳419" },
+      { size: "10ml", price: "৳789" },
+      { size: "15ml", price: "৳1,099" },
+    ],
     inspiration: "Maison Francis Kurkdjian Baccarat Rouge 540",
     notes: "Saffron • Amberwood • Cedar",
     description:
@@ -484,6 +604,11 @@ export const products = [
     name: "YB Pacific Chill 100ml",
     category: "unisex",
     price: "৳5,100",
+    decants: [
+      { size: "5ml", price: "৳419" },
+      { size: "10ml", price: "৳789" },
+      { size: "15ml", price: "৳1,099" },
+    ],
     inspiration: "Louis Vuitton Pacific Chill",
     notes: "Mint • Lemon • Fruits",
     description:
@@ -504,6 +629,11 @@ export const products = [
     name: "YB Imagination 100ml",
     category: "unisex",
     price: "৳5,400",
+    decants: [
+      { size: "5ml", price: "৳449" },
+      { size: "10ml", price: "৳859" },
+      { size: "15ml", price: "৳1,199" },
+    ],
     inspiration: "Louis Vuitton Imagination",
     notes: "Amber • Woods • Spice",
     description:
@@ -524,6 +654,11 @@ export const products = [
     name: "YB Wulong Cha 100ml",
     category: "unisex",
     price: "৳5,100",
+    decants: [
+      { size: "5ml", price: "৳419" },
+      { size: "10ml", price: "৳789" },
+      { size: "15ml", price: "৳1,099" },
+    ],
     inspiration: "Nishane Wulong Cha",
     notes: "Tea • Citrus • Fig",
     description:
@@ -537,6 +672,34 @@ export const products = [
     image: "/bottle.png",
     modalImage: "/bottle.png",
     themeColor: "#52BE7A",
+  },
+
+
+  {
+    id: 28,
+    name: "YB The One Man 100ml",
+    category: "male",
+    price: "৳3,250",
+    fullBottleSoldOut: true,
+    decants: [
+      { size: "5ml",  price: "৳309" },
+      { size: "10ml", price: "৳569" },
+      { size: "15ml", price: "৳849" },
+    ],
+    inspiration: "Dolce & Gabbana The One for Men",
+    notes: "Grapefruit • Cardamom • Tobacco",
+    description:
+      "YB The One Man is a sophisticated and charismatic fragrance crafted for the modern gentleman. Warm spices, fresh citrus, and rich tobacco blend together to create an elegant scent that is both masculine and inviting. Perfect for evenings, special occasions, and cooler weather, it leaves a memorable trail of confidence, refinement, and timeless style.",
+    fragranceFamily: "Woody Spicy",
+    tagline: "Timeless elegance with a warm, spicy, tobacco soul.",
+    topNotes: ["Grapefruit", "Coriander", "Basil"],
+    heartNotes: ["Ginger", "Cardamom", "Orange Blossom"],
+    baseNotes: ["Amber", "Tobacco", "Cedarwood"],
+    perfectFor: ["Evening Wear", "Date Nights", "Formal Occasions", "Autumn & Winter"],
+    performance: ["Long Lasting", "Strong Projection", "Warm & Seductive Trail"],
+    image: "/bottle.png",
+    modalImage: "/bottle.png",
+    themeColor: "#B87840",
   },
 
 ];

@@ -15,11 +15,37 @@ export default function ProductModal({ product, onClose }) {
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
 
+  const buildSizeOpts = (p) => {
+    const opts = [];
+    if (p.decants) {
+      for (const d of p.decants) opts.push({ size: d.size, price: d.price });
+    }
+    opts.push({
+      size: "100ml",
+      price: p.price,
+      label: "Full Bottle",
+      soldOut: !!p.fullBottleSoldOut,
+    });
+    return opts;
+  };
+  const [selectedOpt, setSelectedOpt] = useState(() => {
+    if (product?.fullBottleSoldOut && product?.decants?.length) {
+      const d = product.decants[0];
+      return { size: d.size, price: d.price };
+    }
+    return { size: "100ml", price: product?.price, label: "Full Bottle" };
+  });
+
   const accent    = product?.themeColor || "#D4AF37";
   const accentRgb = product?.themeColor ? hexToRgb(product.themeColor) : "212,175,55";
 
   const handleAddToCart = () => {
-    addItem(product);
+    addItem({
+      ...product,
+      price: selectedOpt.price,
+      selectedSize: selectedOpt.size,
+      cartKey: `${product.id}-${selectedOpt.size}`,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   };
@@ -164,7 +190,52 @@ export default function ProductModal({ product, onClose }) {
               fontSize: "2.2rem", fontFamily: "'Cormorant Garamond', serif",
               fontWeight: 400, letterSpacing: "1px",
             }}>
-              {product.price}
+              {selectedOpt.price}
+            </div>
+
+            <div style={{ marginTop: "12px" }}>
+              <div style={{
+                color: "rgba(255,255,255,0.18)", fontSize: "7px",
+                letterSpacing: "3px", fontFamily: "'Montserrat', sans-serif",
+                fontWeight: 600, marginBottom: "9px", textTransform: "uppercase",
+              }}>
+                Select Size
+              </div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {buildSizeOpts(product).map((opt) => {
+                  const active    = selectedOpt.size === opt.size;
+                  const isSoldOut = opt.soldOut;
+                  return (
+                    <button
+                      key={opt.size}
+                      onClick={() => { if (!isSoldOut) setSelectedOpt(opt); }}
+                      disabled={isSoldOut}
+                      style={{
+                        background: isSoldOut
+                          ? "rgba(220,50,50,0.05)"
+                          : active ? accent : `rgba(${accentRgb},0.06)`,
+                        color: isSoldOut
+                          ? "rgba(220,80,80,0.4)"
+                          : active ? "#000" : accent,
+                        border: isSoldOut
+                          ? "1px solid rgba(220,50,50,0.2)"
+                          : `1px solid ${active ? accent : `rgba(${accentRgb},0.25)`}`,
+                        textDecoration: isSoldOut ? "line-through" : "none",
+                        borderRadius: "999px",
+                        padding: "5px 14px",
+                        fontSize: "9px",
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontWeight: active ? 700 : 400,
+                        letterSpacing: "0.8px",
+                        cursor: isSoldOut ? "not-allowed" : "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      {opt.label || opt.size}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Tagline */}

@@ -37,7 +37,10 @@ export default function CartDrawer() {
 
   const buildOrderText = () => {
     const lines = items
-      .map((i) => `• ${i.name} × ${i.qty}  —  ${formatBDT(parsePrice(i.price) * i.qty)}`)
+      .map((i) => {
+        const sizeLabel = i.selectedSize ? ` (${i.selectedSize})` : "";
+        return `• ${i.name}${sizeLabel} × ${i.qty}  —  ${formatBDT(parsePrice(i.price) * i.qty)}`;
+      })
       .join("\n");
     return (
       `🌟 NEW ORDER — ZUHAIB FRAGRANCE\n\n` +
@@ -231,7 +234,7 @@ export default function CartDrawer() {
           {step === "cart" && items.length > 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               {items.map((item) => (
-                <div key={item.id} style={{
+                <div key={item.cartKey} style={{
                   display: "grid",
                   gridTemplateColumns: "70px 1fr auto",
                   gap: "14px",
@@ -250,7 +253,19 @@ export default function CartDrawer() {
                     <div style={{ color: "#fff", fontSize: "13px", fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1.3 }}>
                       {item.name}
                     </div>
-                    <div style={{ color: "#D4AF37", fontSize: "12px", fontFamily: "'Montserrat', sans-serif", marginTop: "4px" }}>
+                    {item.selectedSize && (
+                      <span style={{
+                        display: "inline-block", marginTop: "5px",
+                        background: "rgba(212,175,55,0.1)",
+                        border: "1px solid rgba(212,175,55,0.25)",
+                        color: "#D4AF37", fontSize: "8px", letterSpacing: "1.5px",
+                        padding: "2px 8px", borderRadius: "999px",
+                        fontFamily: "'Montserrat', sans-serif", fontWeight: 600,
+                      }}>
+                        {item.selectedSize}
+                      </span>
+                    )}
+                    <div style={{ color: "#D4AF37", fontSize: "12px", fontFamily: "'Montserrat', sans-serif", marginTop: "6px" }}>
                       {formatBDT(parsePrice(item.price) * item.qty)}
                     </div>
                     {/* Qty controls */}
@@ -258,7 +273,7 @@ export default function CartDrawer() {
                       {["-", "+"].map((op) => (
                         <button
                           key={op}
-                          onClick={() => updateQty(item.id, op === "+" ? 1 : -1)}
+                          onClick={() => updateQty(item.cartKey, op === "+" ? 1 : -1)}
                           style={{
                             width: "26px", height: "26px", borderRadius: "50%",
                             border: "1px solid rgba(212,175,55,0.3)",
@@ -276,7 +291,7 @@ export default function CartDrawer() {
                     </div>
                   </div>
                   <button
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeItem(item.cartKey)}
                     style={{ background: "none", border: "none", color: "rgba(255,255,255,0.2)", fontSize: "16px", cursor: "pointer", alignSelf: "flex-start" }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = "#ff6b6b")}
                     onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.2)")}
@@ -318,9 +333,9 @@ export default function CartDrawer() {
                 padding: "12px 16px",
               }}>
                 {items.map((i) => (
-                  <div key={i.id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                  <div key={i.cartKey} style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
                     <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "11px", fontFamily: "'Montserrat', sans-serif" }}>
-                      {i.name} × {i.qty}
+                      {i.name}{i.selectedSize ? ` (${i.selectedSize})` : ""} × {i.qty}
                     </span>
                     <span style={{ color: "#D4AF37", fontSize: "11px", fontFamily: "'Montserrat', sans-serif" }}>
                       {formatBDT(parsePrice(i.price) * i.qty)}

@@ -7,24 +7,25 @@ export function CartProvider({ children }) {
   const [drawerOpen, setDrawer] = useState(false);
 
   const addItem = (product) => {
+    const key = product.cartKey || String(product.id);
     setItems((prev) => {
-      const existing = prev.find((i) => i.id === product.id);
+      const existing = prev.find((i) => i.cartKey === key);
       if (existing)
         return prev.map((i) =>
-          i.id === product.id ? { ...i, qty: i.qty + 1 } : i
+          i.cartKey === key ? { ...i, qty: i.qty + 1 } : i
         );
-      return [...prev, { ...product, qty: 1 }];
+      return [...prev, { ...product, cartKey: key, qty: 1 }];
     });
     setDrawer(true);
   };
 
-  const removeItem = (id) =>
-    setItems((prev) => prev.filter((i) => i.id !== id));
+  const removeItem = (cartKey) =>
+    setItems((prev) => prev.filter((i) => i.cartKey !== cartKey));
 
-  const updateQty = (id, delta) =>
+  const updateQty = (cartKey, delta) =>
     setItems((prev) =>
       prev
-        .map((i) => (i.id === id ? { ...i, qty: i.qty + delta } : i))
+        .map((i) => (i.cartKey === cartKey ? { ...i, qty: i.qty + delta } : i))
         .filter((i) => i.qty > 0)
     );
 

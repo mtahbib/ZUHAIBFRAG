@@ -48,6 +48,70 @@ function ViewToggle({ view, onChange }) {
   );
 }
 
+// ─── Size selector helpers ────────────────────────────────────────────────────
+function buildSizeOpts(product) {
+  const opts = [];
+  if (product.decants) {
+    for (const d of product.decants) opts.push({ size: d.size, price: d.price });
+  }
+  opts.push({
+    size: "100ml",
+    price: product.price,
+    label: "Full Bottle",
+    soldOut: !!product.fullBottleSoldOut,
+  });
+  return opts;
+}
+
+function getDefaultOpt(product) {
+  if (product?.fullBottleSoldOut && product?.decants?.length) {
+    const d = product.decants[0];
+    return { size: d.size, price: d.price };
+  }
+  return { size: "100ml", price: product?.price, label: "Full Bottle" };
+}
+
+function SizeSelector({ product, value, onChange }) {
+  const opts = buildSizeOpts(product);
+  return (
+    <div style={{ display: "flex", gap: "5px", flexWrap: "wrap", justifyContent: "center", marginBottom: "8px" }}>
+      {opts.map((opt) => {
+        const active    = value.size === opt.size;
+        const isSoldOut = opt.soldOut;
+        return (
+          <button
+            key={opt.size}
+            onClick={(e) => { if (isSoldOut) return; e.stopPropagation(); onChange(opt); }}
+            disabled={isSoldOut}
+            style={{
+              background: isSoldOut
+                ? "rgba(220,50,50,0.05)"
+                : active ? "#D4AF37" : "rgba(212,175,55,0.05)",
+              color: isSoldOut
+                ? "rgba(220,80,80,0.45)"
+                : active ? "#000" : "rgba(255,255,255,0.5)",
+              border: isSoldOut
+                ? "1px solid rgba(220,50,50,0.2)"
+                : active ? "1px solid #D4AF37" : "1px solid rgba(212,175,55,0.2)",
+              textDecoration: isSoldOut ? "line-through" : "none",
+              borderRadius: "999px",
+              padding: "4px 11px",
+              fontSize: "8.5px",
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: active ? 700 : 400,
+              letterSpacing: "0.5px",
+              cursor: isSoldOut ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+            }}
+          >
+            {opt.label || opt.size}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Canvas dust particles ────────────────────────────────────────────────────
 function GalleryParticles() {
   const canvasRef = useRef(null);
@@ -117,9 +181,10 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
   const [idx, setIdx]           = useState(0);
   const [animating, setAnim]    = useState(false);
   const [captionKey, setCKey]   = useState(0);
-  const [addedId, setAddedId]   = useState(null);
-  const { addItem }             = useCart();
-  const animRef                 = useRef(false);
+  const [addedId, setAddedId]           = useState(null);
+  const [selectedOpt, setSelectedOpt]   = useState(() => getDefaultOpt(filtered[0]));
+  const { addItem }                     = useCart();
+  const animRef                         = useRef(false);
   const touchX                  = useRef(null);
   const reducedMotion           = useRef(
     typeof window !== "undefined" &&
@@ -133,6 +198,11 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
     setIdx(0);
     setCKey((k) => k + 1);
   }, [filterKey]);
+
+  // Reset size selection when product changes
+  useEffect(() => {
+    if (filtered[idx]) setSelectedOpt(getDefaultOpt(filtered[idx]));
+  }, [idx]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigate = useCallback(
     (dir) => {
@@ -178,9 +248,14 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
     touchX.current = null;
   };
 
-  const handleCart = (product) => {
-    addItem(product);
-    setAddedId(product.id);
+  const handleCart = (p) => {
+    addItem({
+      ...p,
+      price: selectedOpt.price,
+      selectedSize: selectedOpt.size,
+      cartKey: `${p.id}-${selectedOpt.size}`,
+    });
+    setAddedId(p.id);
     setTimeout(() => setAddedId(null), 1500);
   };
 
@@ -441,13 +516,15 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
           {product.notes}
         </div>
 
+        <SizeSelector product={product} value={selectedOpt} onChange={setSelectedOpt} />
+
         <div style={{
           color: "#D4AF37",
-          fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)",
+          fontSize: "clamp(1.1rem, 2.2vw, 1.35rem)",
           fontFamily: "'Cormorant Garamond', serif",
           marginBottom: "22px",
         }}>
-          {product.price}
+          {selectedOpt.price}
         </div>
 
         <div style={{ display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" }}>
@@ -529,13 +606,19 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
 // ─── TiltCard ─────────────────────────────────────────────────────────────────
 function TiltCard({ product, onSelect }) {
   const cardRef = useRef(null);
-  const [hov, setHov]     = useState(false);
-  const [added, setAdded] = useState(false);
-  const { addItem }       = useCart();
+  const [hov, setHov]                   = useState(false);
+  const [added, setAdded]               = useState(false);
+  const [selectedOpt, setSelectedOpt]   = useState(() => getDefaultOpt(product));
+  const { addItem }                     = useCart();
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    addItem(product);
+    addItem({
+      ...product,
+      price: selectedOpt.price,
+      selectedSize: selectedOpt.size,
+      cartKey: `${product.id}-${selectedOpt.size}`,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
@@ -637,11 +720,13 @@ function TiltCard({ product, onSelect }) {
           {product.notes}
         </div>
 
+        <SizeSelector product={product} value={selectedOpt} onChange={setSelectedOpt} />
+
         <div style={{
-          color: "#D4AF37", fontSize: "1rem",
-          fontFamily: "'Cormorant Garamond', serif", marginBottom: "20px",
+          color: "#D4AF37", fontSize: "0.95rem",
+          fontFamily: "'Cormorant Garamond', serif", marginBottom: "18px",
         }}>
-          {product.price}
+          {selectedOpt.price}
         </div>
 
         <div style={{ display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>

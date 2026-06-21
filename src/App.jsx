@@ -16,6 +16,7 @@ import ParticleField from "./components/ParticleField";
 import ProductCatalog from "./components/ProductCatalog";
 import SmoothScroll from "./components/SmoothScroll";
 import StorySection from "./components/StorySection";
+import Parvej from "./components/Parvej";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,7 @@ export default function App() {
       <NotesSection />
       <OrderSection />
       <Footer />
+      <Parvej />
     </CartProvider>
   );
 }
