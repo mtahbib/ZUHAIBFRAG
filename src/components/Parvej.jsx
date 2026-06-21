@@ -366,7 +366,10 @@ const WELCOME_MSG = {
   sender: "bot",
   text: "Assalamu Alaikum! I'm **Parvej**, your personal fragrance guide at Zuhaib Fragrance. 😊\n\nNot sure what to buy? Tell me who it's for, your budget, or the vibe you're after — I'll find your perfect scent!",
   products: [],
-  quickReplies: QUICK_REPLIES.slice(0, 4),
+  quickReplies: [
+    ...QUICK_REPLIES.slice(0, 4),
+    { label: "🧪 Decant Prices", value: "what are decants" },
+  ],
 };
 
 export default function Parvej() {
