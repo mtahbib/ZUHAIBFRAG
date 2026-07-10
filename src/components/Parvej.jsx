@@ -23,14 +23,226 @@ function parsePrice(str) {
   return parseInt(String(str).replace(/[৳,\s]/g, ""));
 }
 
-function findProductByName(text) {
-  const t = text.toLowerCase();
-  return products.find((p) => {
-    const short = p.name.toLowerCase()
+// ─── Alias dictionary: misspellings / nicknames → canonical product keyword ──
+const ALIASES = {
+  // Sauvage
+  "savage":            "sauvage",
+  "savaj":             "sauvage",
+  "savaje":            "sauvage",
+  "suvage":            "sauvage",
+  "sovage":            "sauvage",
+  "sauvaj":            "sauvage",
+  "souvage":           "sauvage",
+  "swage":             "sauvage",
+  "saveg":             "sauvage",
+  "sauvge":            "sauvage",
+
+  // Sauvage Elixir
+  "savage elixir":     "sauvage elixir",
+  "savaj elixir":      "sauvage elixir",
+
+  // Baccarat Rouge 540
+  "bacarat":           "baccarat",
+  "backarat":          "baccarat",
+  "bakarat":           "baccarat",
+  "baccrat":           "baccarat",
+  "bacarat rouge":     "baccarat rouge",
+  "bacarat red":       "baccarat rouge",
+  "baccarat red":      "baccarat rouge",
+  "br540":             "baccarat rouge 540",
+  "br 540":            "baccarat rouge 540",
+  "rouge 540":         "baccarat rouge 540",
+
+  // Ultra Male
+  "ultra mail":        "ultra male",
+  "ultramale":         "ultra male",
+  "ultra mel":         "ultra male",
+
+  // Le Male Elixir
+  "le mail":           "le male",
+  "lemale":            "le male",
+  "le male elix":      "le male elixir",
+
+  // Allure Homme Sport
+  "allure sport":      "allure homme sport",
+  "allure homme":      "allure homme sport",
+  "allur":             "allure homme sport",
+
+  // Eros
+  "eros versace":      "eros versace men",
+  "versace eros":      "eros versace men",
+  "eros":              "eros versace men",
+
+  // Layton
+  "leighton":          "layton",
+  "layeton":           "layton",
+  "laiton":            "layton",
+
+  // One Million
+  "1 million":         "one million",
+  "1million":          "one million",
+  "onemillion":        "one million",
+
+  // Aqua Di Gio Profumo
+  "acqua di gio profumo": "aqua di gio profumo",
+  "aqua gio profumo":  "aqua di gio profumo",
+  "adgp":              "aqua di gio profumo",
+  "aqua profumo":      "aqua di gio profumo",
+  "aqua di gio profundo": "aqua di gio profumo",
+
+  // Aqua Di Gio
+  "acqua di gio":      "aqua di gio",
+  "aqua gio":          "aqua di gio",
+  "adg":               "aqua di gio",
+  "acqua gio":         "aqua di gio",
+
+  // Ombre Leather
+  "ombre":             "ombre leather",
+  "omber leather":     "ombre leather",
+  "ombra leather":     "ombre leather",
+  "shadow leather":    "ombre leather",
+
+  // Tobacco Vanille
+  "tobacco vanilla":   "tobacco vanille",
+  "tabacco vanille":   "tobacco vanille",
+  "tobacco vanil":     "tobacco vanille",
+  "tobacco van":       "tobacco vanille",
+  "tabaco vanille":    "tobacco vanille",
+
+  // Oud Wood
+  "oud woods":         "oud wood",
+  "oudwood":           "oud wood",
+  "oud":               "oud wood",
+
+  // Aventus Absolut
+  "aventus":           "aventus absolut",
+  "creed aventus":     "aventus absolut",
+
+  // Bleu De
+  "blue de":           "bleu de",
+  "bleu de chanel":    "bleu de",
+  "blue de chanel":    "bleu de",
+  "bleu":              "bleu de",
+
+  // Pour Homme
+  "pour home":         "pour homme",
+  "pourhomme":         "pour homme",
+
+  // Good Girl
+  "good girl carolina": "good girl",
+  "good grl":          "good girl",
+
+  // Libre
+  "libre ysl":         "libre",
+  "ysl libre":         "libre",
+
+  // Black Opium
+  "black opium ysl":   "black opium",
+  "blackopium":        "black opium",
+  "blk opium":         "black opium",
+
+  // Coco Mademoiselle
+  "coco made":         "coco mademoiselle",
+  "coco mademoisel":   "coco mademoiselle",
+  "mademoiselle":      "coco mademoiselle",
+  "coco":              "coco mademoiselle",
+
+  // Pour Femme
+  "pour fem":          "pour femme",
+  "pour feme":         "pour femme",
+
+  // French Oud
+  "french wood":       "french oud",
+  "french oudh":       "french oud",
+
+  // Pacific Chill
+  "pacific":           "pacific chill",
+  "pacific chil":      "pacific chill",
+
+  // Imagination
+  "imagine":           "imagination",
+  "imagin":            "imagination",
+
+  // Wulong Cha
+  "wu long cha":       "wulong cha",
+  "wu long":           "wulong cha",
+  "wulong":            "wulong cha",
+  "green tea":         "wulong cha",
+
+  // The One Man
+  "the one":           "the one man",
+  "dg the one":        "the one man",
+  "dolce gabbana one": "the one man",
+  "d&g one":           "the one man",
+
+  // Flora
+  "flora gucci":       "flora",
+  "gucci flora":       "flora",
+};
+
+// Normalize a raw query by replacing known aliases with canonical terms
+function normalizeQuery(raw) {
+  let t = raw.toLowerCase().trim();
+  // Try longest alias matches first (multi-word before single-word)
+  const sorted = Object.keys(ALIASES).sort((a, b) => b.length - a.length);
+  for (const alias of sorted) {
+    if (t.includes(alias)) {
+      t = t.replace(alias, ALIASES[alias]);
+    }
+  }
+  return t;
+}
+
+// Character-level similarity score between two strings (0–1)
+function strSimilarity(a, b) {
+  if (a === b) return 1;
+  if (a.includes(b) || b.includes(a)) return 0.9;
+  const longer = a.length >= b.length ? a : b;
+  const shorter = a.length < b.length ? a : b;
+  let matches = 0, j = 0;
+  for (let i = 0; i < shorter.length; i++) {
+    while (j < longer.length && longer[j] !== shorter[i]) j++;
+    if (j < longer.length) { matches++; j++; }
+  }
+  return matches / longer.length;
+}
+
+function findProductByName(rawText) {
+  // Step 1: normalize aliases first
+  const t = normalizeQuery(rawText.replace(/[^a-z0-9\s]/gi, " "));
+  const tWords = t.split(/\s+/).filter((w) => w.length >= 3);
+
+  let bestProduct = null;
+  let bestScore = 0;
+
+  for (const p of products) {
+    const normalized = p.name.toLowerCase()
       .replace(/^yb /, "")
-      .replace(/ \d+ml$/, "");
-    return t.includes(short) || t.includes(p.name.toLowerCase());
-  });
+      .replace(/\s*\d+ml$/, "")
+      .replace(/[^a-z0-9\s]/g, " ")
+      .trim();
+
+    // Exact substring match after normalization — highest priority
+    if (t.includes(normalized)) return p;
+
+    // Fuzzy keyword match
+    const nameWords = normalized.split(/\s+/).filter((w) => w.length >= 3 && !/^\d+$/.test(w));
+    if (!nameWords.length) continue;
+
+    let matched = 0;
+    for (const nw of nameWords) {
+      const best = Math.max(...tWords.map((tw) => strSimilarity(tw, nw)), 0);
+      if (best >= 0.75) matched++;
+    }
+
+    const score = matched / nameWords.length;
+    if (score > bestScore && score >= 0.6) {
+      bestScore = score;
+      bestProduct = p;
+    }
+  }
+
+  return bestProduct;
 }
 
 // ─── Rule-based response engine ───────────────────────────────────────────────
@@ -76,10 +288,10 @@ function getResponse(rawInput) {
       text: "We offer **decant sizes** so you can try any fragrance before committing to a full bottle! 🧪\n\nAvailable sizes:\n• **5ml** — starting from ৳299\n• **10ml** — starting from ৳549\n• **15ml** — starting from ৳799\n\nJust tell me which fragrance you want a decant of — I'll pull up the exact price!",
       products: [],
       quickReplies: [
-        { label: "🔵 Sauvage Decant",     value: "sauvage decant price" },
-        { label: "🔴 Baccarat Decant",    value: "baccarat rouge decant price" },
-        { label: "🟢 Layton Decant",      value: "layton decant price" },
-        { label: "🟣 Ultra Male Decant",  value: "ultra male decant price" },
+        { label: "🔵 Sauvage Decant",     value: "sauvage decant" },
+        { label: "🔴 Baccarat Rouge Decant", value: "baccarat rouge 540 decant" },
+        { label: "🟢 Layton Decant",      value: "layton decant" },
+        { label: "🟣 Ultra Male Decant",  value: "ultra male decant" },
       ],
     };
   }
@@ -113,7 +325,7 @@ function getResponse(rawInput) {
     return {
       text: `**${namedProduct.name}** full bottle is **${namedProduct.price}**.${status}${decantNote}`,
       products: [namedProduct],
-      quickReplies: [{ label: "🧪 See Decant Prices", value: `${namedProduct.name} decant price` }],
+      quickReplies: [{ label: "🧪 See Decant Prices", value: `${namedProduct.name} decant` }],
     };
   }
 
@@ -125,7 +337,7 @@ function getResponse(rawInput) {
     return {
       text: `Here's everything about **${namedProduct.name}** ✨${decantNote}`,
       products: [namedProduct],
-      quickReplies: [{ label: "🧪 See Decant Prices", value: `${namedProduct.name} decant price` }],
+      quickReplies: [{ label: "🧪 See Decant Prices", value: `${namedProduct.name} decant` }],
     };
   }
 

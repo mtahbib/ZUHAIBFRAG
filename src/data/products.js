@@ -6,6 +6,7 @@ export const products = [
     price: "৳4,100",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -32,6 +33,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -58,6 +60,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳299" },
+      { size: "6ml", price: "৳329" },
       { size: "10ml", price: "৳549" },
       { size: "15ml", price: "৳799" },
     ],
@@ -84,6 +87,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -109,6 +113,7 @@ export const products = [
     price: "৳5,100",
     decants: [
       { size: "5ml", price: "৳419" },
+      { size: "6ml", price: "৳469" },
       { size: "10ml", price: "৳789" },
       { size: "15ml", price: "৳1,099" },
     ],
@@ -134,6 +139,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -159,6 +165,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳299" },
+      { size: "6ml", price: "৳329" },
       { size: "10ml", price: "৳549" },
       { size: "15ml", price: "৳799" },
     ],
@@ -184,6 +191,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳299" },
+      { size: "6ml", price: "৳329" },
       { size: "10ml", price: "৳549" },
       { size: "15ml", price: "৳799" },
     ],
@@ -209,6 +217,7 @@ export const products = [
     price: "৳4,100",
     decants: [
       { size: "5ml", price: "৳349" },
+      { size: "6ml", price: "৳399" },
       { size: "10ml", price: "৳669" },
       { size: "15ml", price: "৳899" },
     ],
@@ -234,6 +243,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳299" },
+      { size: "6ml", price: "৳329" },
       { size: "10ml", price: "৳549" },
       { size: "15ml", price: "৳799" },
     ],
@@ -259,6 +269,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳349" },
+      { size: "6ml", price: "৳399" },
       { size: "10ml", price: "৳669" },
       { size: "15ml", price: "৳899" },
     ],
@@ -284,6 +295,7 @@ export const products = [
     price: "৳4,100",
     decants: [
       { size: "5ml", price: "৳349" },
+      { size: "6ml", price: "৳399" },
       { size: "10ml", price: "৳669" },
       { size: "15ml", price: "৳899" },
     ],
@@ -309,6 +321,7 @@ export const products = [
     price: "৳5,100",
     decants: [
       { size: "5ml", price: "৳419" },
+      { size: "6ml", price: "৳469" },
       { size: "10ml", price: "৳789" },
       { size: "15ml", price: "৳1,099" },
     ],
@@ -334,6 +347,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳299" },
+      { size: "6ml", price: "৳329" },
       { size: "10ml", price: "৳549" },
       { size: "15ml", price: "৳799" },
     ],
@@ -359,6 +373,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳299" },
+      { size: "6ml", price: "৳329" },
       { size: "10ml", price: "৳549" },
       { size: "15ml", price: "৳799" },
     ],
@@ -384,6 +399,7 @@ export const products = [
     price: "৳4,100",
     decants: [
       { size: "5ml", price: "৳349" },
+      { size: "6ml", price: "৳399" },
       { size: "10ml", price: "৳669" },
       { size: "15ml", price: "৳899" },
     ],
@@ -408,6 +424,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -433,6 +450,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -458,6 +476,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -483,6 +502,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -508,6 +528,7 @@ export const products = [
     price: "৳3,250",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -533,6 +554,7 @@ export const products = [
     price: "৳4,100",
     decants: [
       { size: "5ml", price: "৳349" },
+      { size: "6ml", price: "৳399" },
       { size: "10ml", price: "৳669" },
       { size: "15ml", price: "৳899" },
     ],
@@ -556,6 +578,7 @@ export const products = [
     price: "৳2,500",
     decants: [
       { size: "5ml", price: "৳309" },
+      { size: "6ml", price: "৳349" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
@@ -581,6 +604,7 @@ export const products = [
     price: "৳5,100",
     decants: [
       { size: "5ml", price: "৳419" },
+      { size: "6ml", price: "৳469" },
       { size: "10ml", price: "৳789" },
       { size: "15ml", price: "৳1,099" },
     ],
@@ -606,6 +630,7 @@ export const products = [
     price: "৳5,100",
     decants: [
       { size: "5ml", price: "৳419" },
+      { size: "6ml", price: "৳469" },
       { size: "10ml", price: "৳789" },
       { size: "15ml", price: "৳1,099" },
     ],
@@ -631,6 +656,7 @@ export const products = [
     price: "৳5,400",
     decants: [
       { size: "5ml", price: "৳449" },
+      { size: "6ml", price: "৳499" },
       { size: "10ml", price: "৳859" },
       { size: "15ml", price: "৳1,199" },
     ],
@@ -656,6 +682,7 @@ export const products = [
     price: "৳5,100",
     decants: [
       { size: "5ml", price: "৳419" },
+      { size: "6ml", price: "৳469" },
       { size: "10ml", price: "৳789" },
       { size: "15ml", price: "৳1,099" },
     ],
@@ -682,7 +709,6 @@ export const products = [
     price: "৳3,250",
     fullBottleSoldOut: true,
     decants: [
-      { size: "5ml",  price: "৳309" },
       { size: "10ml", price: "৳569" },
       { size: "15ml", price: "৳849" },
     ],
