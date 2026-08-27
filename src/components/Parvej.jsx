@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { products } from "../data/products";
 import { useCart } from "../context/CartContext";
 import useIsMobile from "../hooks/useIsMobile";
+import { askParvej } from "../lib/askParvej";
 
 // ─── Quick reply chips ────────────────────────────────────────────────────────
 
@@ -16,12 +17,6 @@ const QUICK_REPLIES = [
   { label: "🌿 Fresh Scents",   value: "suggest fresh fragrance" },
   { label: "🧪 Decant Sizes",   value: "what are decants" },
 ];
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function parsePrice(str) {
-  return parseInt(String(str).replace(/[৳,\s]/g, ""));
-}
 
 // ─── Alias dictionary: misspellings / nicknames → canonical product keyword ──
 const ALIASES = {
@@ -245,221 +240,107 @@ function findProductByName(rawText) {
   return bestProduct;
 }
 
-// ─── Rule-based response engine ───────────────────────────────────────────────
+// ─── Deterministic quick-answers ─────────────────────────────────────────────
+// The rule engine only handles unambiguous fact lookups. Anything needing
+// judgement (recommendations, comparisons, "something like X", vague or
+// multi-constraint asks) returns null and goes to Parvej's AI, which has the
+// full catalog + fragrance knowledge and can actually reason about it.
+
+const truncate = (str, n) => (str && str.length > n ? str.slice(0, n - 1).trimEnd() + "…" : str || "");
+const coreName = (name) => name.replace(/^YB\s+/i, "").replace(/\s*\d+ml$/i, "").trim();
+
+function decantRows(product) {
+  if (!product.decants?.length) return null;
+  return product.decants.map((d) => `• **${d.size}** — ${d.price}`).join("\n");
+}
+
+// Pull catalog products that the AI named in its reply, so their cards
+// (with +CART) render under the message.
+function matchProductsInText(text, limit = 4) {
+  if (!text) return [];
+  const t = text.toLowerCase();
+  const out = [];
+  for (const p of products) {
+    const core = coreName(p.name).toLowerCase();
+    if (core.length < 3) continue;
+    if (t.includes(core)) {
+      if (!out.some((x) => x.id === p.id)) out.push(p);
+      if (out.length >= limit) break;
+    }
+  }
+  return out;
+}
 
 function getResponse(rawInput) {
   const text = rawInput.toLowerCase().trim();
+  const wordCount = text.split(/\s+/).filter(Boolean).length;
 
-  // Greeting
-  if (/^(hi|hello|hey|assalam|salam|heyy|helloo|hii|yo)\b/.test(text)) {
+  // Greeting — only for genuinely short greeting messages
+  if (/^(hi+|hey+|hello+|helloo+|yo|salam|assalam|assalamu|asslamu|hii)\b/.test(text) && wordCount <= 3) {
+    const islamic = /salam/.test(text);
     return {
-      text: "Wa alaikum assalam! 😊 I'm **Parvej**, your personal fragrance guide at Zuhaib Fragrance.\n\nNot sure what to pick? Tell me who it's for or what vibe you're going for — I'll find your perfect match!",
+      text: `${islamic ? "Wa alaikum assalam!" : "Assalamu Alaikum!"} 😊 I'm **Parvej**, your fragrance guide at Zuhaib Fragrance.\n\nTell me who it's for, your budget, or the vibe you're after — I'll find your match.`,
       products: [],
       quickReplies: QUICK_REPLIES.slice(0, 4),
     };
   }
 
-  // Help / what can you do
-  if (/help|what can you|how do i|guide|assist/.test(text)) {
+  // What can you do
+  if (/^(help|menu|what can you do|what do you do|how (do|does) (you|this|it) work|how to use)/.test(text)) {
     return {
-      text: "Here's what I can do for you:\n\n• 💡 Suggest fragrances by gender, occasion or season\n• 💰 Check prices instantly\n• 🎯 Recommend within your budget\n• 🌿 Find scents by type (fresh, woody, sweet…)\n\nJust ask anything!",
+      text: "Here's how I can help:\n\n• 💡 Recommend by occasion, budget, weather or vibe\n• 🔁 Find something close to a designer scent you like\n• 🧪 Show decant sizes & exact prices\n• 🛒 Add picks straight to your cart\n\nJust tell me what you're after.",
       products: [],
       quickReplies: QUICK_REPLIES,
     };
   }
 
-  // Sold-out check
-  if (/sold out|available|in stock|stock/.test(text)) {
-    const soldOutList = products.filter((p) => p.soldOut);
-    if (soldOutList.length === 0) {
-      return { text: "Great news — all fragrances are currently in stock! 🎉", products: [] };
-    }
-    return {
-      text: `The following ${soldOutList.length === 1 ? "fragrance is" : "fragrances are"} currently out of stock:`,
-      products: soldOutList,
-    };
+  // Stock / sold-out list
+  if (/\b(sold ?out|out of stock|in stock|stock status)\b/.test(text)) {
+    const soldOut = products.filter((p) => p.soldOut);
+    return soldOut.length
+      ? { text: "These are currently out of stock:", products: soldOut }
+      : { text: "Good news — everything is in stock right now. 🎉", products: [] };
   }
 
-  const isDecantQuery = /decant|5\s*ml|10\s*ml|15\s*ml|sample|trial|small bottle|small size|mini|tester|try before/.test(text);
+  const named = findProductByName(text);
+  const isPriceQ = /\b(price|prices|cost|how much|koto|dam|daam|dhaam|taka|tk|rate)\b/.test(text);
+  const isDecantWord = /\b(decant|decants|sample|tester|trial|travel size|try before)\b/.test(text);
+  const wantsJudgement = /\b(suggest|recommend|recommendation|option|options|idea|ideas|similar|like|alternative|dupe|clone|vs|versus|compare|which (one|is|should)|better|best|help me (find|pick|choose)|ki nibo|konta|kon ?ta|kemn|kmn)\b/.test(text);
 
-  // General decant info
-  if (isDecantQuery && !findProductByName(text)) {
+  // Generic "what are decants" — no product, not a judgement ask
+  if (isDecantWord && !named && !isPriceQ && !wantsJudgement) {
     return {
-      text: "We offer **decant sizes** so you can try any fragrance before committing to a full bottle! 🧪\n\nAvailable sizes:\n• **5ml** — starting from ৳299\n• **10ml** — starting from ৳549\n• **15ml** — starting from ৳799\n\nJust tell me which fragrance you want a decant of — I'll pull up the exact price!",
+      text: "We sell **decant sizes** so you can try a fragrance before buying a full bottle — 5ml, 6ml, 10ml and 15ml depending on the scent.\n\nTell me which fragrance you want a decant of and I'll pull the exact price.",
       products: [],
       quickReplies: [
-        { label: "🔵 Sauvage Decant",     value: "sauvage decant" },
-        { label: "🔴 Baccarat Rouge Decant", value: "baccarat rouge 540 decant" },
-        { label: "🟢 Layton Decant",      value: "layton decant" },
-        { label: "🟣 Ultra Male Decant",  value: "ultra male decant" },
+        { label: "Ultra Male decant", value: "ultra male decant price" },
+        { label: "Layton decant", value: "layton decant price" },
+        { label: "Aventus decant", value: "aventus decant price" },
       ],
     };
   }
 
-  // Price query for a specific product
-  const namedProduct = findProductByName(text);
+  // Direct price / decant-price lookup for a confidently-matched product
+  if (named && (isPriceQ || (isDecantWord && !wantsJudgement))) {
+    const rows = decantRows(named);
+    const parts = [];
+    if (rows) parts.push(`Decant prices for **${coreName(named.name)}**:\n\n${rows}`);
+    parts.push(`Full bottle: **${named.price}**.${named.soldOut ? " _(full bottle currently unavailable)_" : ""}`);
+    return { text: parts.join("\n\n"), products: [named] };
+  }
 
-  // Decant price for a named product
-  if (namedProduct && isDecantQuery) {
-    if (!namedProduct.decants) {
-      return {
-        text: `Sorry, **${namedProduct.name}** doesn't have decant options listed yet. Feel free to ask on WhatsApp! 📱`,
-        products: [namedProduct],
-      };
-    }
-    const rows = namedProduct.decants.map((d) => `• **${d.size}** — ${d.price}`).join("\n");
-    const status = namedProduct.soldOut ? "\n\n⚠️ Note: Full bottle currently unavailable." : "";
+  // Bare product mention with no judgement intent — show its card
+  if (named && !wantsJudgement && wordCount <= 6) {
+    const rows = decantRows(named);
     return {
-      text: `Decant prices for **${namedProduct.name}**:\n\n${rows}${status}`,
-      products: [namedProduct],
+      text: `**${coreName(named.name)}** — ${named.fragranceFamily}.\n\n${truncate(named.description, 160)}${rows ? `\n\nDecants from **${named.decants[0].price}**.` : ""}`,
+      products: [named],
+      quickReplies: [{ label: "🧪 Decant prices", value: `${named.name} decant price` }],
     };
   }
 
-  if (namedProduct && /price|cost|how much|koto|daam|taka/.test(text)) {
-    const status = namedProduct.soldOut
-      ? " Unfortunately it's currently out of stock."
-      : " It's available now! 🛒";
-    const decantNote = namedProduct.decants
-      ? `\n\nAlso available as a decant — **${namedProduct.decants[0].size}** from **${namedProduct.decants[0].price}**!`
-      : "";
-    return {
-      text: `**${namedProduct.name}** full bottle is **${namedProduct.price}**.${status}${decantNote}`,
-      products: [namedProduct],
-      quickReplies: [{ label: "🧪 See Decant Prices", value: `${namedProduct.name} decant` }],
-    };
-  }
-
-  // Info about a specific product
-  if (namedProduct) {
-    const decantNote = namedProduct.decants
-      ? `\n\nAlso available as a decant from **${namedProduct.decants[0].price}** (${namedProduct.decants[0].size}).`
-      : "";
-    return {
-      text: `Here's everything about **${namedProduct.name}** ✨${decantNote}`,
-      products: [namedProduct],
-      quickReplies: [{ label: "🧪 See Decant Prices", value: `${namedProduct.name} decant` }],
-    };
-  }
-
-  // ── Filter-based suggestion ──────────────────────────────────────────────
-
-  const isMale    = /\b(men|male|man|him|boy|bhai|bro|husband|boyfriend|brother|gent)\b/.test(text);
-  const isFemale  = /\b(women|female|woman|her|girl|apa|wife|girlfriend|sister)\b/.test(text);
-  const isUnisex  = /\b(unisex|both|anyone|couple|gender neutral)\b/.test(text);
-
-  const isDate    = /\b(date|romantic|evening|special|anniversary|dinner)\b/.test(text);
-  const isOffice  = /\b(office|work|professional|meeting|business|formal)\b/.test(text);
-  const isParty   = /\b(party|club|clubbing|night out|event|bash)\b/.test(text);
-  const isSummer  = /\b(summer|hot|beach|vacation|heat|daytime)\b/.test(text);
-  const isWinter  = /\b(winter|cold|cozy|autumn|fall)\b/.test(text);
-  const isDaily   = /\b(daily|casual|everyday|regular)\b/.test(text);
-  const isGym     = /\b(gym|sport|workout|active|exercise)\b/.test(text);
-
-  const isSweet   = /\b(sweet|vanilla|gourmand|fruity|honey|candy)\b/.test(text);
-  const isWoody   = /\b(woody|wood|oud|leather|dark|heavy|oriental|deep)\b/.test(text);
-  const isFresh   = /\b(fresh|clean|light|aquatic|marine|cool|watery)\b/.test(text);
-  const isFloral  = /\b(floral|flower|rose|jasmine|girly|soft)\b/.test(text);
-  const isLuxury  = /\b(luxury|premium|expensive|best|top|finest|splurge)\b/.test(text);
-
-  const budgetMatch = text.match(/\b(\d{3,5})\b/);
-  const budget      = budgetMatch ? parseInt(budgetMatch[1]) : null;
-
-  const wantsSuggestion = /suggest|recommend|help me|what should|what to buy|confused|pick|choose|best|good/.test(text);
-
-  const hasAnyFilter = isMale || isFemale || isUnisex || isDate || isOffice ||
-    isParty || isSummer || isWinter || isDaily || isGym ||
-    isSweet || isWoody || isFresh || isFloral || isLuxury || budget;
-
-  if (!hasAnyFilter) {
-    if (wantsSuggestion) {
-      return {
-        text: "I'd love to help you find the right fragrance! 😊\n\nA couple of quick questions — is it for a **man** or **woman**? And do you have a **budget** in mind?",
-        products: [],
-        quickReplies: QUICK_REPLIES.slice(0, 6),
-      };
-    }
-    return null;
-  }
-
-  let filtered = products.filter((p) => !p.soldOut);
-  const reasons = [];
-
-  // Gender
-  if (isMale && !isFemale) {
-    filtered = filtered.filter((p) => p.category === "male" || p.category === "unisex");
-    reasons.push("for men");
-  } else if (isFemale && !isMale) {
-    filtered = filtered.filter((p) => p.category === "female" || p.category === "unisex");
-    reasons.push("for women");
-  } else if (isUnisex) {
-    filtered = filtered.filter((p) => p.category === "unisex");
-    reasons.push("unisex");
-  }
-
-  // Occasion
-  if (isDate) {
-    const sub = filtered.filter((p) => p.perfectFor?.some((f) => /date|night|evening|romantic|special/i.test(f)));
-    if (sub.length) { filtered = sub; reasons.push("for date nights"); }
-  } else if (isOffice) {
-    const sub = filtered.filter((p) => p.perfectFor?.some((f) => /office|work|formal|business|professional/i.test(f)));
-    if (sub.length) { filtered = sub; reasons.push("for office"); }
-  } else if (isParty) {
-    const sub = filtered.filter((p) => p.perfectFor?.some((f) => /party|club|night|event/i.test(f)));
-    if (sub.length) { filtered = sub; reasons.push("for parties"); }
-  } else if (isGym) {
-    const sub = filtered.filter((p) => p.perfectFor?.some((f) => /gym|sport|active/i.test(f)));
-    if (sub.length) { filtered = sub; reasons.push("for gym & sports"); }
-  } else if (isSummer) {
-    const sub = filtered.filter((p) => p.perfectFor?.some((f) => /summer|spring|beach/i.test(f)));
-    if (sub.length) { filtered = sub; reasons.push("for summer"); }
-  } else if (isWinter) {
-    const sub = filtered.filter((p) => p.perfectFor?.some((f) => /winter|autumn/i.test(f)));
-    if (sub.length) { filtered = sub; reasons.push("for winter"); }
-  } else if (isDaily) {
-    const sub = filtered.filter((p) => p.perfectFor?.some((f) => /daily|casual|everyday/i.test(f)));
-    if (sub.length) { filtered = sub; reasons.push("for daily wear"); }
-  }
-
-  // Scent type
-  if (isSweet) {
-    const sub = filtered.filter((p) => /vanilla|sweet|honey|cacao|tonka/i.test(JSON.stringify(p)));
-    if (sub.length) { filtered = sub; reasons.push("with sweet notes"); }
-  } else if (isWoody) {
-    const sub = filtered.filter((p) => /wood|oud|leather/i.test(JSON.stringify(p)));
-    if (sub.length) { filtered = sub; reasons.push("with woody/oud notes"); }
-  } else if (isFresh) {
-    const sub = filtered.filter((p) => /fresh|aquatic|marine|mint|citrus|sea/i.test(JSON.stringify(p)));
-    if (sub.length) { filtered = sub; reasons.push("with fresh notes"); }
-  } else if (isFloral) {
-    const sub = filtered.filter((p) => /floral|flower|rose|jasmine|blossom/i.test(JSON.stringify(p)));
-    if (sub.length) { filtered = sub; reasons.push("with floral notes"); }
-  }
-
-  // Premium
-  if (isLuxury) {
-    const sub = filtered.filter((p) => parsePrice(p.price) >= 4000);
-    if (sub.length) { filtered = sub; reasons.push("premium picks"); }
-  }
-
-  // Budget
-  if (budget) {
-    const sub = filtered.filter((p) => parsePrice(p.price) <= budget);
-    if (sub.length) { filtered = sub; reasons.push(`under ৳${budget}`); }
-  }
-
-  if (filtered.length === 0) {
-    return {
-      text: "Hmm, I couldn't find an exact match for that! Try loosening the filters a bit — maybe a wider budget or different occasion? 😊",
-      products: [],
-      quickReplies: QUICK_REPLIES.slice(0, 4),
-    };
-  }
-
-  const picks = [...filtered].sort(() => Math.random() - 0.5).slice(0, 3);
-  return {
-    text: `Here are my top picks ${reasons.join(", ")} ✨`,
-    products: picks,
-  };
+  // Everything else → smart AI
+  return null;
 }
 
 // ─── Typing dots animation ────────────────────────────────────────────────────
@@ -489,9 +370,11 @@ function Avatar({ size = 28 }) {
       width: size, height: size, borderRadius: "50%", flexShrink: 0,
       background: "linear-gradient(135deg, #D4AF37, #9a6f1a)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      fontSize: size * 0.42, fontWeight: 700, color: "#000",
-      fontFamily: "'Cormorant Garamond', serif",
-    }}>P</div>
+      overflow: "hidden",
+      border: "1px solid rgba(212,175,55,0.4)"
+    }}>
+      <img src="/parvex.png" alt="Parvez" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+    </div>
   );
 }
 
@@ -501,13 +384,18 @@ function ChatProductCard({ product, onAddToCart }) {
   const [added, setAdded] = useState(false);
   const accent = product.themeColor || "#D4AF37";
 
+  const hasDecants = product.decants && product.decants.length > 0;
+  const displaySize = hasDecants ? product.decants[0].size : "100ml";
+  const displayPrice = hasDecants ? product.decants[0].price : product.price;
+
   const handleAdd = (e) => {
     e.stopPropagation();
     if (product.soldOut || added) return;
     onAddToCart({
       ...product,
-      selectedSize: "100ml",
-      cartKey: `${product.id}-100ml`,
+      selectedSize: displaySize,
+      cartKey: `${product.id}-${displaySize}`,
+      price: hasDecants ? parseInt(String(displayPrice).replace(/[^0-9]/g, '')) : product.price, // ensure price is passed correctly to cart
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
@@ -536,7 +424,7 @@ function ChatProductCard({ product, onAddToCart }) {
           color: "#fff", fontSize: "11px", fontFamily: "'Cormorant Garamond', serif",
           fontWeight: 400, marginBottom: "2px",
           whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-        }}>{product.name}</div>
+        }}>{product.name} {displaySize}</div>
         <div style={{
           color: "rgba(255,255,255,0.3)", fontSize: "9px",
           fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
@@ -544,7 +432,7 @@ function ChatProductCard({ product, onAddToCart }) {
         }}>{product.notes}</div>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span style={{ color: accent, fontSize: "13px", fontFamily: "'Cormorant Garamond', serif" }}>
-            {product.price}
+            {displayPrice}
           </span>
           {product.soldOut ? (
             <span style={{
@@ -605,23 +493,37 @@ export default function Parvej() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
-  const send = (text) => {
+  const send = async (text) => {
     const trimmed = (text || input).trim();
     if (!trimmed || typing) return;
 
+    const history = messages;
     setMessages((prev) => [...prev, { id: Date.now(), sender: "user", text: trimmed }]);
     setInput("");
     setTyping(true);
 
-    setTimeout(() => {
-      const response = getResponse(trimmed) || {
-        text: "Hmm, I didn't quite catch that! 😊 Try something like:\n• \"suggest for men under ৳4000\"\n• \"best for date night\"\n• \"price of Layton\"",
-        products: [],
-        quickReplies: QUICK_REPLIES.slice(0, 4),
-      };
-      setMessages((prev) => [...prev, { id: Date.now() + 1, sender: "bot", ...response }]);
-      setTyping(false);
-    }, 800 + Math.random() * 500);
+    const minDelay = new Promise((r) => setTimeout(r, 500 + Math.random() * 400));
+    const ruleResponse = getResponse(trimmed);
+
+    let response;
+    if (ruleResponse) {
+      await minDelay;
+      response = ruleResponse;
+    } else {
+      try {
+        const [aiText] = await Promise.all([askParvej(trimmed, history, "yusuf-bhai"), minDelay]);
+        response = { text: aiText, products: matchProductsInText(aiText) };
+      } catch {
+        response = {
+          text: "I'm having trouble reaching my notes right now — give it a moment and try again. Meanwhile you could ask:\n• \"something for men under ৳4000\"\n• \"best for a date night\"\n• \"price of Layton\"",
+          products: [],
+          quickReplies: QUICK_REPLIES.slice(0, 4),
+        };
+      }
+    }
+
+    setMessages((prev) => [...prev, { id: Date.now() + 1, sender: "bot", ...response }]);
+    setTyping(false);
   };
 
   return (

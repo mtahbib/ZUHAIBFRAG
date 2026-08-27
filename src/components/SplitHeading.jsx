@@ -37,21 +37,25 @@ export default function SplitHeading({ text, as: Tag = "h2", style = {} }) {
     return () => { tween.kill(); clearTimeout(t); };
   }, [text]);
 
+  const words = text.split(" ");
+
   return (
     <Tag
       ref={ref}
       style={{ ...style, perspective: "800px", display: "block" }}
     >
-      {text.split("").map((char, i) => (
-        <span
-          key={i}
-          data-char
-          style={{
-            display: "inline-block",
-            whiteSpace: char === " " ? "pre" : "normal",
-          }}
-        >
-          {char === " " ? " " : char}
+      {words.map((word, wi) => (
+        <span key={wi} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+          {word.split("").map((char, ci) => (
+            <span key={ci} data-char style={{ display: "inline-block" }}>
+              {char}
+            </span>
+          ))}
+          {wi < words.length - 1 && (
+            <span data-char style={{ display: "inline-block" }}>
+              &nbsp;
+            </span>
+          )}
         </span>
       ))}
     </Tag>

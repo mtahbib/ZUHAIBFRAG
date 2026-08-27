@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const NAV_LINKS = [
@@ -148,6 +149,27 @@ export default function Navbar() {
                 />
               </div>
             ))}
+            <Link
+              to="/other-brands"
+              style={{
+                color: "#D4AF37",
+                letterSpacing: "2px",
+                fontSize: "10px",
+                fontFamily: "'Montserrat', sans-serif",
+                fontWeight: 600,
+                cursor: "none",
+                textDecoration: "none",
+                border: "1px solid rgba(212,175,55,0.3)",
+                borderRadius: "999px",
+                padding: "8px 16px",
+                transition: "all 0.3s ease",
+                whiteSpace: "nowrap",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(212,175,55,0.1)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "none"; }}
+            >
+              OTHER BRANDS
+            </Link>
             <CartIcon totalItems={totalItems} onClick={() => setDrawer(true)} />
           </div>
         )}
@@ -211,6 +233,24 @@ export default function Navbar() {
                 {label}
               </div>
             ))}
+            <Link
+              to="/other-brands"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                color: "#D4AF37",
+                fontSize: "1.1rem",
+                fontFamily: "'Cormorant Garamond', serif",
+                fontWeight: 300,
+                letterSpacing: "4px",
+                textDecoration: "none",
+                border: "1px solid rgba(212,175,55,0.3)",
+                borderRadius: "999px",
+                padding: "12px 20px",
+                textAlign: "center",
+              }}
+            >
+              OTHER BRANDS
+            </Link>
           </div>
         </div>
       )}

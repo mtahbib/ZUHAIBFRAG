@@ -2,8 +2,28 @@ import { useEffect, useState } from "react";
 
 const LETTERS = "ZUHAIB".split("");
 
+// Stable, gently randomized mist puffs drifting up from the nozzle.
+const MIST_PARTICLES = Array.from({ length: 7 }).map((_, i) => ({
+  id: i,
+  x: -16 + i * 5.5 + (i % 2 === 0 ? -3 : 3),
+  drift: (i % 2 === 0 ? -1 : 1) * (8 + i * 3),
+  size: 4 + (i % 3),
+  duration: 1.5 + (i % 4) * 0.25,
+  delay: i * 0.16,
+}));
+
+// A denser one-shot burst fired the moment loading completes.
+const BURST_PARTICLES = Array.from({ length: 12 }).map((_, i) => ({
+  id: i,
+  x: -20 + i * 3.6,
+  drift: (i % 2 === 0 ? -1 : 1) * (18 + (i % 5) * 8),
+  size: 4 + (i % 4),
+  delay: (i % 6) * 0.03,
+}));
+
 export default function Loader({ onFinish }) {
   const [progress, setProgress] = useState(0);
+  const [burst, setBurst] = useState(false);
   const [fade, setFade] = useState(false);
 
   useEffect(() => {
@@ -13,8 +33,9 @@ export default function Loader({ onFinish }) {
       if (p >= 100) {
         p = 100;
         clearInterval(interval);
-        setTimeout(() => setFade(true), 400);
-        setTimeout(() => onFinish(), 1100);
+        setBurst(true);
+        setTimeout(() => setFade(true), 550);
+        setTimeout(() => onFinish(), 1300);
       }
       setProgress(Math.min(p, 100));
     }, 110);
@@ -50,6 +71,86 @@ export default function Loader({ onFinish }) {
           animation: "pulse-glow 3s ease-in-out infinite",
         }}
       />
+
+      {/* Perfume bottle + spray */}
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "34px",
+          zIndex: 2,
+        }}
+      >
+        {/* Mist plume, anchored above the nozzle */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "100%",
+            left: "50%",
+            width: 0,
+            height: 0,
+          }}
+        >
+          {MIST_PARTICLES.map((p) => (
+            <span
+              key={p.id}
+              style={{
+                position: "absolute",
+                left: `${p.x}px`,
+                bottom: "2px",
+                width: `${p.size}px`,
+                height: `${p.size}px`,
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(212,175,55,0.55) 55%, transparent 75%)",
+                filter: "blur(0.5px)",
+                opacity: 0,
+                "--mx": `${p.drift}px`,
+                animation: `mist-rise ${p.duration}s ease-out ${p.delay}s infinite`,
+                animationPlayState: burst ? "paused" : "running",
+              }}
+            />
+          ))}
+
+          {burst &&
+            BURST_PARTICLES.map((p) => (
+              <span
+                key={`b-${p.id}`}
+                style={{
+                  position: "absolute",
+                  left: `${p.x}px`,
+                  bottom: "2px",
+                  width: `${p.size}px`,
+                  height: `${p.size}px`,
+                  borderRadius: "50%",
+                  background:
+                    "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(212,175,55,0.6) 55%, transparent 75%)",
+                  filter: "blur(0.5px)",
+                  opacity: 0,
+                  "--mx": `${p.drift}px`,
+                  animation: `mist-burst 0.75s cubic-bezier(0.16,1,0.3,1) ${p.delay}s forwards`,
+                }}
+              />
+            ))}
+        </div>
+
+        {/* Bottle */}
+        <img
+          src="/ph1.png"
+          alt="Yusuf Bhai"
+          style={{
+            width: "84px",
+            height: "auto",
+            display: "block",
+            filter:
+              "drop-shadow(0 0 22px rgba(212,175,55,0.4)) drop-shadow(0 0 8px rgba(212,175,55,0.25))",
+            animation: burst
+              ? "nozzle-press 0.3s ease-in-out 2"
+              : "nozzle-press 1.6s ease-in-out infinite",
+          }}
+        />
+      </div>
 
       {/* Letters */}
       <div style={{ display: "flex", gap: "2px", position: "relative", zIndex: 2 }}>
