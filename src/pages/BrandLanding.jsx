@@ -58,12 +58,12 @@ function splitChars(text) {
 }
 
 
-function YusufBhaiVisual({ prominent }) {
+function YusufBhaiVisual({ prominent, compact }) {
   return (
     <div
       style={{
         position: "relative",
-        width: "clamp(200px, 22vw, 320px)",
+        width: compact ? "clamp(140px, 40vw, 190px)" : "clamp(200px, 22vw, 320px)",
         aspectRatio: "3 / 4",
         transform: `scale(${prominent ? 1.06 : 1})`,
         transition: "transform 0.6s ease",
@@ -98,12 +98,12 @@ function YusufBhaiVisual({ prominent }) {
   );
 }
 
-function OtherBrandsVisual({ prominent }) {
+function OtherBrandsVisual({ prominent, compact }) {
   return (
     <div
       style={{
         position: "relative",
-        width: "clamp(200px, 22vw, 320px)",
+        width: compact ? "clamp(140px, 40vw, 190px)" : "clamp(200px, 22vw, 320px)",
         aspectRatio: "3 / 4",
         transform: `scale(${prominent ? 1.06 : 1})`,
         transition: "transform 0.6s ease",
@@ -205,7 +205,8 @@ export default function BrandLanding() {
         flexDirection: isMobile ? "column" : "row",
         background: "#000",
         cursor: "auto",
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: isMobile ? "visible" : "hidden",
       }}
     >
       <style>{`
@@ -248,7 +249,10 @@ export default function BrandLanding() {
             onMouseLeave={() => setHovered(null)}
             style={{
               flex: isMobile ? "none" : isHovered ? 1.5 : otherHovered ? 1 : 1,
-              height: isMobile ? "50vh" : "100vh",
+              height: isMobile ? "auto" : "100vh",
+              minHeight: isMobile ? "58vh" : undefined,
+              padding: isMobile ? (i === 0 ? "108px 24px 44px" : "48px 24px 56px") : 0,
+              boxSizing: "border-box",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -277,11 +281,11 @@ export default function BrandLanding() {
               }}
             />
 
-            <div className="zf-bottle-wrap" style={{ marginBottom: isMobile ? "14px" : "26px" }}>
+            <div className="zf-bottle-wrap" style={{ marginBottom: isMobile ? "22px" : "26px" }}>
               {isDark ? (
-                <YusufBhaiVisual prominent={isHovered} />
+                <YusufBhaiVisual prominent={isHovered} compact={isMobile} />
               ) : (
-                <OtherBrandsVisual prominent={isHovered} />
+                <OtherBrandsVisual prominent={isHovered} compact={isMobile} />
               )}
             </div>
 
@@ -313,7 +317,7 @@ export default function BrandLanding() {
                 width: isHovered ? "44px" : "0px",
                 height: "1px",
                 background: isDark ? "rgba(212,175,55,0.75)" : "rgba(138,106,58,0.65)",
-                margin: "0 auto 18px",
+                margin: isMobile ? "0 auto 14px" : "0 auto 18px",
                 transition: "width 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             />
@@ -332,7 +336,7 @@ export default function BrandLanding() {
                   ? "rgba(150,110,60,1)"
                   : "rgba(150,110,60,0.85)",
                 textTransform: "uppercase",
-                marginBottom: "30px",
+                marginBottom: isMobile ? "22px" : "30px",
                 textAlign: "center",
                 position: "relative",
                 transition: "letter-spacing 0.4s ease, color 0.4s ease",
@@ -436,7 +440,7 @@ export default function BrandLanding() {
       <div
         style={{
           position: "absolute",
-          top: isMobile ? "14px" : "20px",
+          top: isMobile ? "16px" : "20px",
           left: "50%",
           transform: "translateX(-50%)",
           fontFamily: "'Montserrat', sans-serif",
@@ -460,7 +464,7 @@ export default function BrandLanding() {
       <div
         style={{
           position: "absolute",
-          top: isMobile ? "34px" : "48px",
+          top: isMobile ? "40px" : "48px",
           left: "50%",
           transform: `translateX(-50%) scale(${hovered !== null ? 1.05 : 1})`,
           display: "flex",
