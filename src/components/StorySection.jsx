@@ -2,12 +2,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import useIsMobile from "../hooks/useIsMobile";
-import SplitHeading from "./SplitHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
-  { end: 27, suffix: "+", label: "Fragrances" },
+  { end: 46, suffix: "+", label: "Fragrances" },
   { end: 100, suffix: "%", label: "Authentic" },
   { end: null, text: "BD",  label: "Nationwide" },
 ];
