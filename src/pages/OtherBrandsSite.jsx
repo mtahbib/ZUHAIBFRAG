@@ -10,19 +10,20 @@ import ObShop from "../otherBrands/pages/ObShop";
 import ObProductDetail from "../otherBrands/pages/ObProductDetail";
 import ObWishlist from "../otherBrands/pages/ObWishlist";
 import ObParvej from "../otherBrands/components/ObParvej";
+import "../otherBrands/atelier.css";
 
 export default function OtherBrandsSite() {
   const location = useLocation();
 
   useEffect(() => {
-    document.body.classList.add("theme-light");
-    return () => document.body.classList.remove("theme-light");
+    document.body.classList.add("theme-light", "ob-body");
+    return () => document.body.classList.remove("theme-light", "ob-body");
   }, []);
 
   return (
     <ObCartProvider>
       <WishlistProvider>
-        <div style={{ minHeight: "100vh" }}>
+        <div className="ob-experience" style={{ minHeight: "100vh" }}>
           <ObNavbar />
           <Routes>
             <Route path="/" element={<ObHome />} />

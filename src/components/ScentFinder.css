@@ -1,0 +1,62 @@
+.yb-scent-finder { padding: 90px 6% 30px; background: #e8e2d7; color: #302c25; }
+.yb-scent-heading { display: flex; justify-content: space-between; align-items: end; gap: 30px; padding-bottom: 44px; }
+.yb-scent-finder .yb-kicker { color: #786341; font-size: 9px; }
+.yb-scent-heading h2 { margin: 22px 0 0; font: 400 clamp(56px, 5.8vw, 88px)/.94 'Cormorant Garamond', Georgia, serif; letter-spacing: -2.5px; }
+.yb-scent-heading h2 em { color: var(--scent-accent); font-weight: 400; transition: color .6s; }
+.yb-scent-heading > p { margin: 0 0 5px; color: #686257; font-size: 12px; line-height: 1.9; }
+.yb-scent-experience { display: grid; grid-template-columns: 1fr 1.25fr 1fr; align-items: center; gap: clamp(28px, 4vw, 70px); border-top: 1px solid #302c252b; padding-block: 48px; }
+.yb-scent-eyebrow { margin: 0 0 28px; font-size: 9px; letter-spacing: 1.7px; text-transform: uppercase; color: #6b6356; }
+.yb-scent-finder .yb-scent-choice { width: 100%; display: flex; align-items: center; gap: 16px; text-align: left; padding: 22px 12px; border: 0; border-bottom: 1px solid #302c2524; background: transparent; color: #686257; cursor: pointer; transition: background .3s, color .3s; }
+.yb-scent-choice:first-of-type { border-top: 1px solid #302c2524; }
+.yb-scent-choice svg { width: 29px; height: 29px; flex-shrink: 0; }
+.yb-scent-choice > span:nth-child(2) { flex: 1; }
+.yb-scent-choice strong { display: block; font: 500 clamp(23px, 2vw, 30px)/1.1 'Cormorant Garamond', Georgia, serif; }
+.yb-scent-choice small { display: block; margin-top: 7px; font-size: 10px; line-height: 1.5; }
+.yb-scent-choice-arrow { opacity: 0; transform: translate(-4px, 4px); transition: opacity .3s, transform .3s; }
+.yb-scent-finder .yb-scent-choice[aria-pressed='true'] { color: var(--scent-accent); background: #fff7; }
+.yb-scent-choice[aria-pressed='true'] .yb-scent-choice-arrow, .yb-scent-choice:hover .yb-scent-choice-arrow { opacity: 1; transform: none; }
+.yb-scent-choice:hover { background: #fff4; }
+.yb-scent-finder :is(button, a):focus-visible { outline: 2px solid var(--scent-accent); outline-offset: 4px; }
+.yb-scent-art { position: relative; padding: 12px 12px 0; }
+.yb-scent-arch { position: relative; isolation: isolate; aspect-ratio: .76; max-height: 510px; overflow: hidden; border-radius: 50% 50% 2px 2px; background: var(--scent-sky); box-shadow: 0 22px 35px -25px #302c2560; transition: background .8s; }
+.yb-scent-art::before { content: ''; position: absolute; inset: 0 0 30px; border: 1px solid #8d796743; border-radius: 50% 50% 2px 2px; pointer-events: none; }
+.yb-scent-arch::after { content: ''; position: absolute; inset: 0; z-index: 4; opacity: .12; background: repeating-linear-gradient(0deg, transparent 0 2px, #fff4 3px, transparent 4px); pointer-events: none; }
+.yb-scent-orbit { position: absolute; width: 77%; aspect-ratio: 1; top: 12%; left: 11.5%; border: 1px solid #fff5; border-radius: 50%; }
+.yb-scent-sun { position: absolute; top: 22%; left: 31%; width: 38%; aspect-ratio: 1; border-radius: 50%; background: var(--scent-glow); box-shadow: 0 0 65px 12px #ffe8ba40; transition: background .8s, transform 1s, box-shadow .8s; }
+.yb-scent-art[data-mood='fresh'] .yb-scent-sun { transform: translateY(-22%); }
+.yb-scent-art[data-mood='dark'] .yb-scent-sun { transform: translate(25%, -25%) scale(.72); box-shadow: -15px 5px 0 1px var(--scent-glow); background: var(--scent-sky); }
+.yb-scent-art[data-mood='impression'] .yb-scent-sun { transform: translateY(23%); }
+.yb-scent-star { position: absolute; z-index: 2; color: #fff0; font-size: 22px; transition: color .7s; }
+.yb-scent-star-one { top: 19%; left: 26%; }.yb-scent-star-two { top: 40%; right: 20%; font-size: 14px; }
+.yb-scent-art[data-mood='dark'] .yb-scent-star, .yb-scent-art[data-mood='impression'] .yb-scent-star { color: #f4e4bf; }
+.yb-scent-dune { position: absolute; width: 160%; height: 55%; border-radius: 50% 50% 0 0; background: var(--scent-land); transition: background .8s, transform 1s; }
+.yb-scent-dune-back { bottom: -6%; left: -45%; transform: rotate(23deg); opacity: .75; }
+.yb-scent-dune-front { bottom: -22%; right: -35%; transform: rotate(-23deg); filter: brightness(.67); }
+.yb-scent-art[data-mood='fresh'] .yb-scent-dune-back { transform: rotate(12deg) translateY(6%); }
+.yb-scent-art[data-mood='dark'] .yb-scent-dune-front { transform: rotate(-13deg); }
+.yb-scent-scene-caption { position: absolute; z-index: 3; inset: auto 20px 9%; text-align: center; color: #fff4de; animation: yb-scent-reveal .5s ease both; }
+.yb-scent-scene-caption > span { font-size: 10px; letter-spacing: 5px; }
+.yb-scent-scene-caption p { max-width: 220px; margin: 14px auto 0; font: italic 400 clamp(26px, 2.6vw, 38px)/1.05 'Cormorant Garamond', Georgia, serif; }
+.yb-scent-art-label { display: block; margin-top: 20px; text-align: center; color: #726858; font-size: 8px; letter-spacing: 1.3px; text-transform: uppercase; }
+.yb-scent-result { min-width: 0; }
+.yb-scent-result-content { animation: yb-scent-reveal .45s ease both; }
+.yb-scent-family { display: inline-block; padding: 7px 10px; border: 1px solid #302c252b; color: var(--scent-accent); font-size: 8px; letter-spacing: 1px; text-transform: uppercase; }
+.yb-scent-result h3 { margin: 18px 0; font: 500 clamp(34px, 3vw, 48px)/1.02 'Cormorant Garamond', Georgia, serif; letter-spacing: -1px; }
+.yb-scent-description { min-height: 90px; color: #686257; font-size: 11px; line-height: 1.9; }
+.yb-scent-notes { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 23px 0; color: var(--scent-accent); font-size: 9px; }
+.yb-scent-notes span::before { content: '·'; margin-right: 7px; }
+.yb-scent-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; border-top: 1px solid #302c2524; padding-top: 20px; }
+.yb-scent-price strong { font-size: 20px; font-weight: 500; }.yb-scent-price > span { color: #686257; font-size: 9px; }
+.yb-scent-finder .yb-scent-discover { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 23px; padding: 17px 19px; border: 1px solid #302c25; background: #302c25; color: #f7f0e4; cursor: pointer; font-size: 10px; letter-spacing: .5px; transition: background .3s; }
+.yb-scent-discover:hover { background: var(--scent-accent); }.yb-scent-discover > span { font-size: 20px; }
+.yb-scent-decant { margin: 12px 0 0; color: #706757; font-size: 9px; line-height: 1.6; }
+.yb-scent-footer { display: flex; justify-content: space-between; gap: 20px; padding-top: 22px; border-top: 1px solid #302c252b; color: #726858; font-size: 9px; line-height: 1.6; }.yb-scent-footer i { margin-left: 18px; font-style: normal; }
+@keyframes yb-scent-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (min-width: 1500px) { .yb-scent-experience { grid-template-columns: 1fr minmax(0, 460px) 1fr; gap: 6vw; }.yb-scent-result { max-width: 380px; }.yb-scent-choices { max-width: 400px; } }
+@media (max-width: 1000px) and (min-width: 701px) {
+  .yb-scent-experience { grid-template-columns: 1fr 1fr; gap: 35px; }.yb-scent-choices { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }.yb-scent-choices > p { grid-column: 1 / -1; margin-bottom: 4px; }.yb-scent-finder .yb-scent-choice { flex-direction: column; align-items: start; padding: 15px 10px; border-top: 1px solid #302c2524; }.yb-scent-choice-arrow { display: none; }.yb-scent-choice strong { font-size: 23px; }
+}
+@media (max-width: 700px) {
+  .yb-scent-finder { padding: 60px 6% 25px; }.yb-scent-heading { display: block; padding-bottom: 28px; }.yb-scent-heading h2 { font-size: clamp(52px, 12vw, 76px); }.yb-scent-heading > p { margin-top: 24px; font-size: 11px; }.yb-scent-experience { grid-template-columns: 1fr; gap: 34px; padding-block: 28px 35px; }.yb-scent-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }.yb-scent-choices > p { grid-column: 1 / -1; margin-bottom: 10px; }.yb-scent-finder .yb-scent-choice { gap: 10px; padding: 16px 10px; border: 1px solid #302c2524; }.yb-scent-choice svg { width: 23px; height: 23px; }.yb-scent-choice strong { font-size: 22px; }.yb-scent-choice small, .yb-scent-choice-arrow { display: none; }.yb-scent-art { width: min(100%, 350px); justify-self: center; }.yb-scent-arch { aspect-ratio: .9; }.yb-scent-scene-caption p { font-size: 32px; }.yb-scent-result h3 { font-size: 42px; }.yb-scent-description { min-height: 0; font-size: 12px; }.yb-scent-result .yb-scent-eyebrow { margin-bottom: 20px; }.yb-scent-footer { font-size: 8px; }.yb-scent-footer > span:last-child { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .yb-scent-finder *, .yb-scent-finder *::before, .yb-scent-finder *::after { animation: none !important; transition: none !important; } }

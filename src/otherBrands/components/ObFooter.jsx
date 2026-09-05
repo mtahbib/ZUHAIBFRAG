@@ -48,8 +48,9 @@ export default function ObFooter() {
           margin: "0 auto 28px",
         }}
       >
-        <div style={{ fontFamily: FONT_SERIF, fontSize: "1.2rem" }}>
-          Zuhaib <span style={{ color: COLORS.copper }}>Fragrance</span>
+        <div className="ob-footer-brand" style={{ fontFamily: FONT_SERIF, fontSize: "1.2rem" }}>
+          <img src="/zlogo.png" alt="" aria-hidden="true" />
+          <span>Zuhaib <b style={{ color: COLORS.copper }}>Fragrance</b></span>
         </div>
         <div style={{ display: "flex", gap: "22px", flexWrap: "wrap" }}>
           <Link to="/" style={{ color: "rgba(245,240,231,0.6)", fontFamily: FONT_SANS, fontSize: "10.5px", letterSpacing: "1px", textDecoration: "none" }}>

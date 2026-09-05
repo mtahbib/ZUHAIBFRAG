@@ -17,13 +17,19 @@ import ProductCatalog from "../components/ProductCatalog";
 import SmoothScroll from "../components/SmoothScroll";
 import StorySection from "../components/StorySection";
 import Parvej from "../components/Parvej";
+import "../yusufAtelier.css";
 
 export default function YusufBhaiSite() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.body.classList.add("has-custom-cursor");
-    return () => document.body.classList.remove("has-custom-cursor");
+    const previousTitle = document.title;
+    document.title = "Yusuf Bhai Fragrances — Zuhaib Fragrance";
+    document.body.classList.add("has-custom-cursor", "yb-body");
+    return () => {
+      document.title = previousTitle;
+      document.body.classList.remove("has-custom-cursor", "yb-body");
+    };
   }, []);
 
   if (loading) {
@@ -32,6 +38,7 @@ export default function YusufBhaiSite() {
 
   return (
     <CartProvider>
+      <div className="yb-experience">
       <GrainOverlay />
       <ScrollProgress />
       <ParticleField />
@@ -49,6 +56,7 @@ export default function YusufBhaiSite() {
       <OrderSection />
       <Footer />
       <Parvej />
+      </div>
     </CartProvider>
   );
 }

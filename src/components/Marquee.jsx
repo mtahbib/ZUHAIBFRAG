@@ -14,6 +14,7 @@ export default function Marquee({ inverted = false }) {
   return (
     <div
       aria-hidden="true"
+      className={`yb-marquee ${inverted ? "is-inverted" : ""}`}
       style={{
         background: inverted ? "rgba(212,175,55,0.06)" : "#060504",
         borderTop: "1px solid rgba(212,175,55,0.09)",
@@ -29,6 +30,7 @@ export default function Marquee({ inverted = false }) {
         @keyframes _marquee-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
       `}</style>
       <div
+        className="yb-marquee-track"
         style={{
           display: "flex",
           width: "max-content",
@@ -38,6 +40,7 @@ export default function Marquee({ inverted = false }) {
         {row.map((item, i) => (
           <span
             key={i}
+            className="yb-marquee-item"
             style={{
               display: "inline-flex",
               alignItems: "center",

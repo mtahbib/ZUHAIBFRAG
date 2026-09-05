@@ -151,7 +151,11 @@ export default function CartDrawer() {
               fontFamily: "'Montserrat', sans-serif",
               fontWeight: 300,
               marginBottom: "4px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
             }}>
+              <img src="/zlogo.png" alt="" aria-hidden="true" style={{ width: "25px", height: "25px", objectFit: "contain" }} />
               ZUHAIB FRAGRANCE
             </div>
             <div style={{
@@ -165,6 +169,7 @@ export default function CartDrawer() {
           </div>
           <button
             onClick={close}
+            aria-label="Close cart"
             style={{
               background: "none",
               border: "1px solid rgba(255,255,255,0.1)",

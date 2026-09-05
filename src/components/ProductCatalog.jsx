@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 function ViewToggle({ view, onChange }) {
   return (
     <div
+      className="yb-view-toggle"
       style={{
         display: "inline-flex",
         border: "1px solid rgba(212,175,55,0.35)",
@@ -25,6 +26,7 @@ function ViewToggle({ view, onChange }) {
         return (
           <button
             key={v}
+            aria-pressed={active}
             onClick={() => onChange(v)}
             style={{
               padding: "10px 22px",
@@ -74,7 +76,7 @@ function getDefaultOpt(product) {
 function SizeSelector({ product, value, onChange }) {
   const opts = buildSizeOpts(product);
   return (
-    <div style={{ display: "flex", gap: "5px", flexWrap: "wrap", justifyContent: "center", marginBottom: "8px" }}>
+    <div className="yb-size-selector" style={{ display: "flex", gap: "5px", flexWrap: "wrap", justifyContent: "center", marginBottom: "8px" }}>
       {opts.map((opt) => {
         const active    = value.size === opt.size;
         const isSoldOut = opt.soldOut;
@@ -177,7 +179,7 @@ function GalleryParticles() {
 }
 
 // ─── Gallery View ─────────────────────────────────────────────────────────────
-function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
+function GalleryView({ filtered, onSelect, isMobile }) {
   const [idx, setIdx]           = useState(0);
   const [animating, setAnim]    = useState(false);
   const [captionKey, setCKey]   = useState(0);
@@ -186,35 +188,25 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
   const { addItem }                     = useCart();
   const animRef                         = useRef(false);
   const touchX                  = useRef(null);
-  const reducedMotion           = useRef(
+  const reducedMotion           =
     typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const total = filtered.length;
-
-  // Reset on filter change
-  useEffect(() => {
-    setIdx(0);
-    setCKey((k) => k + 1);
-  }, [filterKey]);
-
-  // Reset size selection when product changes
-  useEffect(() => {
-    if (filtered[idx]) setSelectedOpt(getDefaultOpt(filtered[idx]));
-  }, [idx]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigate = useCallback(
     (dir) => {
       if (animRef.current || total <= 1) return;
+      const next = (idx + dir + total) % total;
       animRef.current = true;
       setAnim(true);
-      setIdx((i) => (i + dir + total) % total);
+      setIdx(next);
+      setSelectedOpt(getDefaultOpt(filtered[next]));
       setCKey((k) => k + 1);
-      const delay = reducedMotion.current ? 60 : 960;
+      const delay = reducedMotion ? 60 : 960;
       setTimeout(() => { animRef.current = false; setAnim(false); }, delay);
     },
-    [total]
+    [filtered, idx, reducedMotion, total]
   );
 
   // Direct-jump (for dot clicks)
@@ -224,10 +216,11 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
       animRef.current = true;
       setAnim(true);
       setIdx(i);
+      setSelectedOpt(getDefaultOpt(filtered[i]));
       setCKey((k) => k + 1);
-      setTimeout(() => { animRef.current = false; setAnim(false); }, reducedMotion.current ? 60 : 960);
+      setTimeout(() => { animRef.current = false; setAnim(false); }, reducedMotion ? 60 : 960);
     },
-    [idx]
+    [filtered, idx, reducedMotion]
   );
 
   // Keyboard
@@ -259,7 +252,7 @@ function GalleryView({ filtered, filterKey, onSelect, isMobile }) {
     setTimeout(() => setAddedId(null), 1500);
   };
 
-  const TRANS = reducedMotion.current
+  const TRANS = reducedMotion
     ? "opacity 0.3s ease"
     : "transform 0.9s cubic-bezier(0.22,0.8,0.2,1), opacity 0.9s cubic-bezier(0.22,0.8,0.2,1), filter 0.9s cubic-bezier(0.22,0.8,0.2,1)";
 
@@ -642,8 +635,9 @@ function TiltCard({ product, onSelect }) {
   };
 
   return (
-    <div style={{ perspective: "600px" }}>
+    <div className="yb-product-perspective" style={{ perspective: "600px" }}>
       <div
+        className="yb-product-card"
         ref={cardRef}
         data-cursor="VIEW"
         onMouseMove={onMove}
@@ -662,7 +656,7 @@ function TiltCard({ product, onSelect }) {
           overflow: "hidden",
         }}
       >
-        <div style={{
+        <div className="yb-product-badge" style={{
           position: "absolute", top: "14px", left: "14px",
           background: "rgba(212,175,55,0.1)", border: "1px solid rgba(212,175,55,0.2)",
           color: "#D4AF37", fontSize: "7px", letterSpacing: "2px",
@@ -684,7 +678,7 @@ function TiltCard({ product, onSelect }) {
           </div>
         )}
 
-        <div style={{
+        <div className="yb-product-image-wrap" style={{
           width: "300px", maxWidth: "90%",
           height: "300px",
           marginTop: "24px", marginBottom: "24px",
@@ -694,6 +688,7 @@ function TiltCard({ product, onSelect }) {
           transition: "transform 0.4s ease",
         }}>
           <img
+            className="yb-product-image"
             src={product.image}
             alt={product.name}
             style={{
@@ -779,7 +774,8 @@ export default function ProductCatalog() {
   const headerRef               = useRef(null);
 
   const filtered = products.filter((p) => {
-    const nameMatch = p.name.toLowerCase().includes(search.toLowerCase());
+    const haystack = [p.name, p.notes, p.fragranceFamily, ...(p.topNotes || []), ...(p.heartNotes || []), ...(p.baseNotes || [])].join(" ").toLowerCase();
+    const nameMatch = haystack.includes(search.toLowerCase());
     const catMatch  = category === "all" || p.category === category;
     return nameMatch && catMatch;
   });
@@ -787,12 +783,22 @@ export default function ProductCatalog() {
   // filterKey drives gallery reset without depending on filtered array identity
   const filterKey = `${search}|${category}`;
 
+  useEffect(() => {
+    const onCollection = (event) => {
+      const next = ["male", "female", "unisex"].includes(event.detail) ? event.detail : "all";
+      setCategory(next);
+      setSearch("");
+    };
+    window.addEventListener("yb:set-category", onCollection);
+    return () => window.removeEventListener("yb:set-category", onCollection);
+  }, []);
+
   const changeView = (v) => {
     if (v === view) return;
     setViewVis(false);
     setTimeout(() => {
       setView(v);
-      try { sessionStorage.setItem("zf-view", v); } catch (_) {}
+      try { sessionStorage.setItem("zf-view", v); } catch { /* Storage is optional. */ }
       setViewVis(true);
     }, 240);
   };
@@ -819,11 +825,12 @@ export default function ProductCatalog() {
     <>
       <section
         id="catalog"
+        className="yb-catalog"
         ref={sectionRef}
         style={{ background: "#050505", padding: isMobile ? "80px 5%" : "140px 8%" }}
       >
         {/* ── Header ── */}
-        <div ref={headerRef} style={{ textAlign: "center", marginBottom: "60px" }}>
+        <div className="yb-catalog-heading" ref={headerRef} style={{ textAlign: "center", marginBottom: "60px" }}>
           <div style={{
             color: "#D4AF37", letterSpacing: "8px", marginBottom: "20px",
             fontSize: "10px", fontFamily: "'Montserrat', sans-serif", fontWeight: 300,
@@ -842,6 +849,7 @@ export default function ProductCatalog() {
         {/* ── Search ── */}
         <div style={{ textAlign: "center", marginBottom: "30px" }}>
           <input
+            className="yb-catalog-search"
             type="text"
             placeholder="Search fragrance..."
             value={search}
@@ -859,7 +867,7 @@ export default function ProductCatalog() {
         </div>
 
         {/* ── Filters row ── */}
-        <div style={{
+        <div className="yb-catalog-filters" style={{
           display: "flex", justifyContent: "center",
           alignItems: "center", gap: isMobile ? "8px" : "10px",
           marginBottom: isMobile ? "14px" : "18px",
@@ -868,6 +876,7 @@ export default function ProductCatalog() {
           {CATS.map((cat) => (
             <button
               key={cat}
+              aria-pressed={category === cat}
               onClick={() => setCategory(cat)}
               style={{
                 padding: isMobile ? "9px 18px" : "11px 26px",
@@ -888,7 +897,7 @@ export default function ProductCatalog() {
         </div>
 
         {/* ── View toggle row ── */}
-        <div style={{
+        <div className="yb-catalog-view-row" style={{
           display: "flex", justifyContent: "center",
           marginBottom: "40px",
         }}>
@@ -902,7 +911,7 @@ export default function ProductCatalog() {
           transition: "opacity 0.24s ease, transform 0.24s ease",
         }}>
           {view === "grid" ? (
-            <div style={{
+            <div className="yb-product-grid" style={{
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
               gap: isMobile ? "18px" : "28px",
@@ -929,8 +938,8 @@ export default function ProductCatalog() {
             </div>
           ) : (
             <GalleryView
+              key={filterKey}
               filtered={filtered}
-              filterKey={filterKey}
               onSelect={setSelected}
               isMobile={isMobile}
             />

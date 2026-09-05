@@ -1,256 +1,49 @@
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
-import useIsMobile from "../hooks/useIsMobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
-  { end: 46, suffix: "+", label: "Fragrances" },
-  { end: 100, suffix: "%", label: "Authentic" },
-  { end: null, text: "BD",  label: "Nationwide" },
+  { value: "46+", label: "Compositions" },
+  { value: "100%", label: "Authentic" },
+  { value: "64", label: "Districts served" },
 ];
 
 export default function StorySection() {
-  const isMobile   = useIsMobile();
   const sectionRef = useRef(null);
-  const imageRef   = useRef(null);
-  const textRef    = useRef(null);
-  const statsRef   = useRef(null);
-  const counterRefs = useRef([]);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        imageRef.current,
-        { x: -70, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.3, ease: "power3.out", clearProps: "opacity,transform",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true } }
-      );
-      gsap.fromTo(
-        Array.from(textRef.current.children),
-        { x: 60, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.1, stagger: 0.14, ease: "power2.out", clearProps: "opacity,transform",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true } }
-      );
-      gsap.fromTo(
-        Array.from(statsRef.current.children),
-        { y: 35, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, stagger: 0.13, ease: "power2.out", clearProps: "opacity,transform",
-          scrollTrigger: { trigger: statsRef.current, start: "top 88%", once: true } }
-      );
-
-      // Count-up animation for numeric stats
-      STATS.forEach((stat, i) => {
-        if (stat.end == null) return;
-        const el = counterRefs.current[i];
-        if (!el) return;
-        const obj = { val: 0 };
-        gsap.to(obj, {
-          val: stat.end,
-          duration: 1.8,
-          ease: "power2.out",
-          snap: { val: 1 },
-          onUpdate: () => { el.textContent = Math.round(obj.val) + stat.suffix; },
-          scrollTrigger: { trigger: statsRef.current, start: "top 88%", once: true },
-        });
-      });
-    }, sectionRef);
-    const t = setTimeout(() => ScrollTrigger.refresh(), 200);
-    return () => { ctx.revert(); clearTimeout(t); };
+      gsap.fromTo(".yb-story-visual", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 1.3, ease: "power3.inOut", scrollTrigger: { trigger: section, start: "top 75%", once: true } });
+      gsap.fromTo(".yb-story-reveal", { y: 35, opacity: 0 }, { y: 0, opacity: 1, duration: .9, stagger: .1, ease: "power3.out", scrollTrigger: { trigger: section, start: "top 76%", once: true } });
+    }, section);
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      style={{
-        background: "#050505",
-        padding: isMobile ? "80px 5%" : "140px 8%",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Vertical accent line */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: "8%",
-          width: "1px",
-          height: "100%",
-          background:
-            "linear-gradient(to bottom, transparent, rgba(212,175,55,0.18), transparent)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(360px, 1fr))",
-          gap: isMobile ? "40px" : "100px",
-          alignItems: "center",
-          maxWidth: "1280px",
-          margin: "0 auto",
-        }}
-      >
-        {/* Image */}
-        <div ref={imageRef} style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ position: "relative", display: "inline-block" }}>
-            <div
-              style={{
-                position: "absolute",
-                inset: -14,
-                border: "1px solid rgba(212,175,55,0.18)",
-                borderRadius: "32px",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                inset: -7,
-                border: "1px solid rgba(212,175,55,0.08)",
-                borderRadius: "26px",
-              }}
-            />
-            <img
-              src="/yb.png"
-              alt="Yusuf Bhai"
-              style={{
-                width: isMobile ? "100%" : "420px",
-                maxWidth: "100%",
-                borderRadius: "20px",
-                display: "block",
-                filter: "brightness(0.88) contrast(1.06)",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                bottom: "20px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                background: "rgba(0,0,0,0.8)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(212,175,55,0.3)",
-                padding: "10px 24px",
-                borderRadius: "999px",
-                color: "#D4AF37",
-                fontSize: "10px",
-                letterSpacing: "4px",
-                fontFamily: "'Montserrat', sans-serif",
-                whiteSpace: "nowrap",
-              }}
-            >
-              DUBAI'S FINEST PERFUMER
-            </div>
-          </div>
+    <section id="about" className="yb-story" ref={sectionRef} aria-labelledby="yb-story-title">
+      <div className="yb-story-number" aria-hidden="true">01</div>
+      <div className="yb-story-visual">
+        <img src="/yb.png" alt="Yusuf Bhai, Dubai perfumer" loading="lazy" />
+        <span className="yb-story-stamp">DUBAI<br />PERFUMERY<br />ATELIER</span>
+        <p>“A fragrance should arrive<br />before your introduction.”</p>
+      </div>
+      <div className="yb-story-copy">
+        <p className="yb-kicker yb-story-reveal"><i>✦</i> The man behind the trail</p>
+        <h2 id="yb-story-title" className="yb-story-reveal">Made to be<br /><em>remembered.</em></h2>
+        <div className="yb-story-body yb-story-reveal">
+          <p>Yusuf Bhai is one of Dubai’s most recognised perfumers, known for translating the character of iconic fragrances into compositions with remarkable performance.</p>
+          <p>His work brings the ritual of fine fragrance closer: complex openings, memorable hearts and dry-downs that remain long after the room changes.</p>
         </div>
-
-        {/* Text */}
-        <div ref={textRef}>
-          <div
-            style={{
-              color: "#D4AF37",
-              letterSpacing: "7px",
-              marginBottom: "20px",
-              fontSize: "10px",
-              fontFamily: "'Montserrat', sans-serif",
-              fontWeight: 300,
-            }}
-          >
-            THE STORY
-          </div>
-
-          <h2
-            style={{
-              color: "#fff",
-              fontSize: "clamp(2.8rem,5vw,4.5rem)",
-              margin: 0,
-              lineHeight: 1.1,
-              fontFamily: "'Cormorant Garamond', serif",
-              fontWeight: 300,
-            }}
-          >
-            Why{" "}
-            <span style={{ color: "#D4AF37", fontStyle: "italic" }}>
-              Yusuf Bhai?
-            </span>
-          </h2>
-
-          <div
-            style={{
-              width: "50px",
-              height: "1px",
-              background: "linear-gradient(90deg, #D4AF37, transparent)",
-              margin: "28px 0",
-            }}
-          />
-
-          {[
-            "Yusuf Bhai is one of Dubai's most recognized perfumers, renowned for creating premium inspired fragrances that deliver exceptional performance and remarkable longevity.",
-            "His fragrances have gained popularity across the Middle East and internationally — making luxury scent experiences accessible to all.",
-            "Zuhaib Fragrance proudly brings authentic Yusuf Bhai fragrances to Bangladesh, ensuring quality, authenticity, and the best possible value.",
-          ].map((text, i) => (
-            <p
-              key={i}
-              style={{
-                color: "rgba(255,255,255,0.45)",
-                fontSize: "13px",
-                lineHeight: "2.1",
-                marginTop: i === 0 ? 0 : "18px",
-                fontFamily: "'Montserrat', sans-serif",
-                fontWeight: 300,
-                letterSpacing: "0.5px",
-              }}
-            >
-              {text}
-            </p>
-          ))}
-
-          {/* Stats */}
-          <div
-            ref={statsRef}
-            style={{
-              display: "flex",
-              gap: isMobile ? "24px" : "45px",
-              marginTop: "50px",
-              borderTop: "1px solid rgba(212,175,55,0.1)",
-              paddingTop: "40px",
-            }}
-          >
-            {STATS.map(({ end, suffix, text, label }, i) => (
-              <div key={label}>
-                <div
-                  ref={(el) => (counterRefs.current[i] = el)}
-                  style={{
-                    color: "#D4AF37",
-                    fontSize: "2.8rem",
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontWeight: 400,
-                    lineHeight: 1,
-                  }}
-                >
-                  {end != null ? `0${suffix}` : text}
-                </div>
-                <div
-                  style={{
-                    color: "rgba(255,255,255,0.35)",
-                    fontSize: "9px",
-                    letterSpacing: "3px",
-                    marginTop: "8px",
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontWeight: 300,
-                  }}
-                >
-                  {label.toUpperCase()}
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="yb-story-signature yb-story-reveal"><span>Curated in Dubai</span><strong>Yusuf Bhai</strong></div>
+        <div className="yb-story-stats yb-story-reveal">
+          {STATS.map((stat) => <div key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></div>)}
         </div>
       </div>
+      <div className="yb-story-sidecopy" aria-hidden="true">THE ART OF LEAVING AN IMPRESSION</div>
     </section>
   );
 }

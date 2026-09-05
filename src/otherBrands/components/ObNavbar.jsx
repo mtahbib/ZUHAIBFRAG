@@ -220,6 +220,7 @@ export default function ObNavbar() {
         .ob-icon-btn:active { transform: scale(0.92); }
       `}</style>
       <nav
+        className="ob-navbar"
         ref={navRef}
         style={{
           position: "sticky",
@@ -236,6 +237,7 @@ export default function ObNavbar() {
         }}
       >
         <Link
+          className="ob-nav-brand"
           to="/other-brands"
           style={{
             fontFamily: FONT_SERIF,
@@ -245,8 +247,10 @@ export default function ObNavbar() {
             letterSpacing: "0.5px",
             flexShrink: 0,
           }}
+          aria-label="Zuhaib Fragrance — Other Brands home"
         >
-          Zuhaib <span style={{ color: COLORS.copper }}>Fragrance</span>
+          <img className="ob-brand-logo" src="/zlogo.png" alt="" aria-hidden="true" />
+          <span className="ob-brand-wordmark">Zuhaib <b>Fragrance</b></span>
         </Link>
 
         {!isMobile && <SearchBox onNavigate={goTo} />}

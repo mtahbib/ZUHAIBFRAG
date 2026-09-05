@@ -11,7 +11,7 @@ const IVORY = "#F8F1E4";
 // molecules rising off the glass rather than an outward smoke burst.
 // Computed once at module load — purely decorative, no need to vary per mount.
 function makeParticles(count) {
-  return Array.from({ length: count }, (_, i) => {
+  return Array.from({ length: count }, () => {
     const wander = (Math.random() - 0.5) * 30;
     const rise = 44 + Math.random() * 60;
     return {
@@ -343,15 +343,32 @@ export default function FirstNote({ onDone }) {
             <div
               ref={brandRef}
               style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontWeight: 400,
-                fontSize: isMobile ? "1.6rem" : "2.1rem",
-                letterSpacing: "5px",
-                color: "#2a2419",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
                 willChange: "opacity, transform",
               }}
             >
-              ZUHAIB FRAGRANCE
+              <img
+                src="/zlogo.png"
+                alt="Zuhaib Fragrance"
+                style={{
+                  width: isMobile ? "92px" : "116px",
+                  height: isMobile ? "92px" : "116px",
+                  objectFit: "contain",
+                  filter: "drop-shadow(0 14px 18px rgba(44,31,16,0.16))",
+                }}
+              />
+              <span style={{
+                marginTop: "8px",
+                fontFamily: "'Cormorant Garamond', serif",
+                fontWeight: 500,
+                fontSize: isMobile ? "1rem" : "1.15rem",
+                letterSpacing: isMobile ? "4px" : "6px",
+                color: "#2a2419",
+              }}>
+                ZUHAIB FRAGRANCE
+              </span>
             </div>
             <div
               ref={brandSubRef}

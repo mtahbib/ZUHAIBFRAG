@@ -527,24 +527,39 @@ export default function BrandLanding() {
             }}
           />
 
-          {/* Text — each word tints toward whichever side is active */}
-          <div style={{ position: "relative", zIndex: 1, whiteSpace: "nowrap" }}>
-            <span
-              style={{
-                color: hovered === 1 ? "#8a6a3a" : "#D4AF37",
-                transition: "color 0.4s ease",
-              }}
-            >
-              ZUHAIB{" "}
-            </span>
-            <span
-              style={{
-                color: hovered === 0 ? "#D4AF37" : "#8a6a3a",
-                transition: "color 0.4s ease",
-              }}
-            >
-              FRAGRANCE
-            </span>
+          <img
+            src="/zlogo.png"
+            alt="Zuhaib Fragrance"
+            style={{
+              position: "relative",
+              zIndex: 1,
+              display: "block",
+              width: isMobile ? "43px" : "50px",
+              height: isMobile ? "43px" : "50px",
+              margin: "0 auto 3px",
+              objectFit: "contain",
+              filter: hovered === 0
+                ? "drop-shadow(0 5px 10px rgba(0,0,0,.75)) drop-shadow(0 0 8px rgba(212,175,55,.25))"
+                : "drop-shadow(0 5px 9px rgba(42,36,25,.2))",
+              transition: "filter 0.4s ease, transform 0.4s ease",
+              transform: `rotate(${hovered === 0 ? -3 : hovered === 1 ? 3 : 0}deg)`,
+            }}
+          />
+
+          <div
+            style={{
+              position: "relative",
+              zIndex: 1,
+              color: hovered === 0 ? "#D4AF37" : "#725632",
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: "9px",
+              fontWeight: 500,
+              letterSpacing: "2.5px",
+              whiteSpace: "nowrap",
+              transition: "color 0.4s ease",
+            }}
+          >
+            ZUHAIB FRAGRANCE
           </div>
 
           {/* Subline lives on the same solid/split background as the title

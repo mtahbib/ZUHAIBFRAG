@@ -1,21 +1,20 @@
-// Visual identity for the Other Brands experience — a warm editorial
-// palette, deliberately distinct from the Yusuf Bhai black/gold site.
+// Other Brands: paper, ink and burgundy, with a darker campaign stage.
 // Zuhaib Fragrance is the retailer/curator here, not the manufacturer, so
 // nothing in this palette should read as a single perfume brand's identity.
 
 export const COLORS = {
-  ivory: "#F5F0E7",
-  sand: "#E9DFD0",
-  espresso: "#211C18",
-  olive: "#626653",
-  copper: "#A66A4C",
+  ivory: "#F7F5F0",
+  sand: "#EDE8E3",
+  espresso: "#302326",
+  olive: "#69695C",
+  copper: "#885566",
 
   // Derived tints used throughout for borders/surfaces/text-on-ivory.
-  espressoSoft: "rgba(33,28,24,0.62)",
-  espressoFaint: "rgba(33,28,24,0.42)",
-  espressoHairline: "rgba(33,28,24,0.12)",
+  espressoSoft: "rgba(48,35,38,0.68)",
+  espressoFaint: "rgba(48,35,38,0.56)",
+  espressoHairline: "rgba(48,35,38,0.14)",
   oliveSoft: "rgba(98,102,83,0.16)",
-  copperSoft: "rgba(166,106,76,0.14)",
+  copperSoft: "rgba(136,85,102,0.12)",
   white: "#FFFFFF",
 };
 

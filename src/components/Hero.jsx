@@ -1,309 +1,94 @@
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const DETAILS = [
+  ["Origin", "Dubai, UAE"],
+  ["Collection", "46 signatures"],
+  ["Discovery", "From 5 ml"],
+];
+
 export default function Hero() {
-  const heroRef      = useRef(null);
-  const bottleRef    = useRef(null);
-  const bottleWrapRef = useRef(null);
-  const textRef      = useRef(null);
-  const glowRef      = useRef(null);
+  const heroRef = useRef(null);
+  const artRef = useRef(null);
+  const glowRef = useRef(null);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    // ── Entrance ─────────────────────────
-    gsap.fromTo(
-      bottleRef.current,
-      { opacity: 0, scale: 0.72 },
-      { opacity: 1, scale: 1, duration: 2.2, ease: "power3.out" }
-    );
-    gsap.fromTo(
-      Array.from(textRef.current.children),
-      { opacity: 0, y: 55 },
-      { opacity: 1, y: 0, duration: 1.3, stagger: 0.13, delay: 0.7, ease: "power2.out" }
-    );
+    const hero = heroRef.current;
+    const art = artRef.current;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ctx = gsap.context(() => {
+      if (reduced) return;
+      gsap.fromTo(".yb-hero-reveal", { opacity: 0, y: 38 }, { opacity: 1, y: 0, duration: 1.25, stagger: 0.09, delay: 0.12, ease: "power3.out", clearProps: "opacity,transform" });
+      gsap.fromTo(art, { opacity: 0, scale: .78, rotation: -7 }, { opacity: 1, scale: 1, rotation: 0, duration: 1.8, ease: "power3.out", clearProps: "opacity,transform" });
+      gsap.to(".yb-hero-copy", { yPercent: -13, opacity: .2, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "78% top", scrub: .8 } });
+      gsap.to(".yb-hero-scene", { yPercent: -18, scale: .91, opacity: .15, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "78% top", scrub: .8 } });
+    }, hero);
 
-    // ── Float loop on bottle (not wrapper) ───
-    gsap.to(bottleRef.current, {
-      y: -22,
-      duration: 3.8,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
+    const xTo = gsap.quickTo(art, "rotationY", { duration: 1, ease: "power3.out" });
+    const yTo = gsap.quickTo(art, "rotationX", { duration: 1, ease: "power3.out" });
+    const glowX = gsap.quickTo(glowRef.current, "x", { duration: 1.2, ease: "power3.out" });
+    const onMove = (event) => {
+      if (paused || reduced || event.pointerType === "touch") return;
+      const rect = hero.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - .5;
+      const y = (event.clientY - rect.top) / rect.height - .5;
+      xTo(x * 18); yTo(-y * 10); glowX(x * 70);
+    };
+    const reset = () => { xTo(0); yTo(0); glowX(0); };
+    hero.addEventListener("pointermove", onMove);
+    hero.addEventListener("pointerleave", reset);
+    return () => {
+      hero.removeEventListener("pointermove", onMove);
+      hero.removeEventListener("pointerleave", reset);
+      [xTo, yTo, glowX].forEach((fn) => fn.tween.kill());
+      ctx.revert();
+    };
+  }, [paused]);
 
-    // ── Scroll parallax on wrapper — no conflict with float ──
-    gsap.to(bottleWrapRef.current, {
-      y: -220,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top top",
-        end: "65% top",
-        scrub: 1.8,
-      },
-    });
-    gsap.to(textRef.current, {
-      y: -100,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top top",
-        end: "50% top",
-        scrub: 1.2,
-      },
-    });
-    gsap.to(glowRef.current, {
-      scale: 2.2,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top top",
-        end: "50% top",
-        scrub: 1,
-      },
-    });
-
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-  }, []);
-
-  const handleMouseMove = (e) => {
-    const rect = heroRef.current.getBoundingClientRect();
-    const dx = (e.clientX - (rect.left + rect.width  / 2)) / (rect.width  / 2);
-    const dy = (e.clientY - (rect.top  + rect.height / 2)) / (rect.height / 2);
-    gsap.to(bottleRef.current, {
-      rotateY: dx * 20,
-      rotateX: -dy * 10,
-      duration: 0.7,
-      ease: "power2.out",
-      transformPerspective: 900,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    gsap.to(bottleRef.current, {
-      rotateY: 0,
-      rotateX: 0,
-      duration: 1.8,
-      ease: "elastic.out(1, 0.4)",
-    });
-  };
+  const discover = () => document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section
-      id="home"
-      ref={heroRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        minHeight: "100vh",
-        background: "#000",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "relative",
-        overflow: "hidden",
-        textAlign: "center",
-        padding: "40px 20px 80px",
-      }}
-    >
-      {/* Concentric rings */}
-      {[380, 620, 880].map((size, i) => (
-        <div
-          key={size}
-          style={{
-            position: "absolute",
-            width: `${size}px`,
-            height: `${size}px`,
-            borderRadius: "50%",
-            border: "1px solid rgba(212,175,55,0.07)",
-            animation: `ring-pulse ${3.5 + i * 0.9}s ease-in-out ${i * 0.5}s infinite`,
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-        />
-      ))}
+    <section id="home" className="yb-hero" ref={heroRef} data-paused={paused}>
+      <div className="yb-hero-grain" aria-hidden="true" />
+      <div className="yb-hero-grid" aria-hidden="true" />
+      <div className="yb-hero-ghost" aria-hidden="true">YB</div>
+      <div className="yb-hero-index yb-hero-reveal"><span>THE PERFUMER’S COLLECTION</span><span>EST. DUBAI · ARRIVED DHAKA</span></div>
 
-      {/* Ambient glow */}
-      <div
-        ref={glowRef}
-        style={{
-          position: "absolute",
-          width: "750px",
-          height: "750px",
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(212,175,55,0.13) 0%, transparent 65%)",
-          filter: "blur(55px)",
-          zIndex: 2,
-          animation: "pulse-glow 5s ease-in-out infinite",
-        }}
-      />
-
-      {/* Bottle — wrapper owns scroll parallax, img owns float + tilt */}
-      <div ref={bottleWrapRef} style={{ zIndex: 10, position: "relative" }}>
-        <img
-          ref={bottleRef}
-          src="/k1.png"
-          alt="Yusuf Bhai Fragrance"
-          style={{
-            width: "760px",
-            maxWidth: "90vw",
-            display: "block",
-            filter:
-              "drop-shadow(0 0 90px rgba(212,175,55,0.5)) drop-shadow(0 0 25px rgba(212,175,55,0.2))",
-            willChange: "transform",
-          }}
-        />
+      <div className="yb-hero-copy">
+        <p className="yb-kicker yb-hero-reveal"><i>✦</i> Authentic Yusuf Bhai</p>
+        <h1 className="yb-hero-reveal">A signature<br /><em>before a word.</em></h1>
+        <p className="yb-hero-lede yb-hero-reveal">Dubai-born compositions with presence, projection and a trail that people remember.</p>
+        <div className="yb-hero-actions yb-hero-reveal">
+          <button className="yb-primary-button" onClick={discover}>Enter the collection <span>↘</span></button>
+          <button className="yb-text-button" onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}>Meet the perfumer <span>→</span></button>
+        </div>
+        <div className="yb-hero-details yb-hero-reveal">
+          {DETAILS.map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}
+        </div>
       </div>
 
-      {/* Text block */}
-      <div
-        ref={textRef}
-        style={{ zIndex: 20, position: "relative", marginTop: "10px" }}
-      >
-        <div
-          style={{
-            color: "#D4AF37",
-            letterSpacing: "10px",
-            fontSize: "10px",
-            fontFamily: "'Montserrat', sans-serif",
-            fontWeight: 300,
-          }}
-        >
-          AUTHENTIC YUSUF BHAI FRAGRANCES
+      <div className="yb-hero-scene">
+        <div className="yb-scene-glow" ref={glowRef} aria-hidden="true" />
+        <div className="yb-scene-ring yb-ring-one" aria-hidden="true" />
+        <div className="yb-scene-ring yb-ring-two" aria-hidden="true" />
+        <div className="yb-hero-art" ref={artRef}>
+          {[3, 2, 1].map((layer) => <img key={layer} className="yb-hero-art-edge" src="/k1.png" alt="" aria-hidden="true" style={{ transform: `translateZ(${-layer * 7}px)`, filter: `brightness(${.25 + layer * .1})` }} />)}
+          <img src="/k1.png" alt="Yusuf Bhai fragrance staged with sculptural smoke" fetchPriority="high" draggable="false" />
+          <div className="yb-hero-sheen" aria-hidden="true" />
         </div>
-
-        <h1
-          style={{
-            color: "#fff",
-            margin: "10px 0 0",
-            fontSize: "clamp(4rem,12vw,9rem)",
-            letterSpacing: "14px",
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300,
-            lineHeight: 0.95,
-            textShadow: "0 0 60px rgba(255,255,255,0.08)",
-          }}
-        >
-          ZUHAIB
-        </h1>
-
-        <div
-          style={{
-            color: "rgba(212,175,55,0.75)",
-            letterSpacing: "20px",
-            marginTop: "10px",
-            fontSize: "12px",
-            fontFamily: "'Montserrat', sans-serif",
-            fontWeight: 200,
-          }}
-        >
-          FRAGRANCE
-        </div>
-
-        <div
-          style={{
-            width: "55px",
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, #D4AF37, transparent)",
-            margin: "28px auto",
-          }}
-        />
-
-        <p
-          style={{
-            color: "rgba(255,255,255,0.38)",
-            maxWidth: "500px",
-            margin: "0 auto",
-            lineHeight: "2.2",
-            fontSize: "12px",
-            fontFamily: "'Montserrat', sans-serif",
-            fontWeight: 300,
-            letterSpacing: "1.5px",
-          }}
-        >
-          Crafted in Dubai. Delivered across Bangladesh.
-          <br />
-          Premium inspired fragrances with luxury performance.
-        </p>
-
-        <button
-          onClick={() =>
-            document
-              .getElementById("collection")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#D4AF37";
-            e.currentTarget.style.color = "#000";
-            e.currentTarget.style.letterSpacing = "5px";
-            e.currentTarget.style.borderColor = "#D4AF37";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.color = "#D4AF37";
-            e.currentTarget.style.letterSpacing = "4px";
-            e.currentTarget.style.borderColor = "rgba(212,175,55,0.5)";
-          }}
-          data-magnetic
-          data-cursor="EXPLORE"
-          style={{
-            background: "transparent",
-            color: "#D4AF37",
-            border: "1px solid rgba(212,175,55,0.5)",
-            padding: "16px 52px",
-            borderRadius: "999px",
-            fontWeight: 600,
-            cursor: "none",
-            letterSpacing: "4px",
-            fontSize: "11px",
-            fontFamily: "'Montserrat', sans-serif",
-            transition: "all 0.35s ease",
-            marginTop: "36px",
-            display: "inline-block",
-          }}
-        >
-          EXPLORE COLLECTION
-        </button>
+        <div className="yb-scene-note yb-note-top"><span>01 / OPENING</span><strong>Rare citrus</strong><i /></div>
+        <div className="yb-scene-note yb-note-base"><span>03 / THE TRAIL</span><strong>Woods & amber</strong><i /></div>
+        <p className="yb-scene-hint"><span>✧</span> Move to reveal the dimension</p>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "40px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "14px",
-          zIndex: 20,
-          pointerEvents: "none",
-        }}
-      >
-        <div
-          style={{
-            color: "rgba(255,255,255,0.18)",
-            letterSpacing: "5px",
-            fontSize: "8px",
-            fontFamily: "'Montserrat', sans-serif",
-            fontWeight: 300,
-          }}
-        >
-          SCROLL
-        </div>
-        <div
-          style={{
-            width: "1px",
-            height: "65px",
-            background: "linear-gradient(to bottom, #D4AF37, transparent)",
-            animation: "scroll-line 2.2s ease-in-out infinite",
-          }}
-        />
+      <div className="yb-hero-footer">
+        <button className="yb-scroll" onClick={discover}><span>↓</span>SCROLL TO DISCOVER</button>
+        <p>PERSONAL LUXURY · BOTTLED IN DUBAI · DELIVERED NATIONWIDE</p>
+        <button className="yb-pause" onClick={() => setPaused((value) => !value)} aria-pressed={paused} aria-label={paused ? "Play hero motion" : "Pause hero motion"}>{paused ? "▷ Play motion" : "Ⅱ Pause motion"}</button>
       </div>
     </section>
   );

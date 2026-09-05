@@ -72,7 +72,7 @@ export default function Loader({ onFinish }) {
         }}
       />
 
-      {/* Perfume bottle + spray */}
+      {/* House emblem + spray */}
       <div
         style={{
           position: "relative",
@@ -135,16 +135,16 @@ export default function Loader({ onFinish }) {
             ))}
         </div>
 
-        {/* Bottle */}
+        {/* House emblem */}
         <img
-          src="/ph1.png"
-          alt="Yusuf Bhai"
+          src="/zlogo.png"
+          alt="Zuhaib Fragrance"
           style={{
-            width: "84px",
+            width: "104px",
             height: "auto",
             display: "block",
             filter:
-              "drop-shadow(0 0 22px rgba(212,175,55,0.4)) drop-shadow(0 0 8px rgba(212,175,55,0.25))",
+              "drop-shadow(0 0 24px rgba(255,255,255,0.2)) drop-shadow(0 0 15px rgba(212,175,55,0.28))",
             animation: burst
               ? "nozzle-press 0.3s ease-in-out 2"
               : "nozzle-press 1.6s ease-in-out infinite",

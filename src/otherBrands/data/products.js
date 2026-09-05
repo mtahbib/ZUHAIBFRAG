@@ -833,6 +833,33 @@ const RAW_PRODUCTS = [
       inspiredBy: "Original Versace Eros DNA",
     sizes: sizes(459, 529, 829, 1209),
   },
+  {
+    brand: "Lattafa",
+    name: "Fakhar",
+    image: "/lf.png",
+    concentration: "Eau de Parfum",
+    gender: "Men",
+    family: "Fresh Aromatic",
+    fragranceFamily: "Aromatic / Fresh Spicy / Woody",
+    description:
+      "A fresh, clean and modern masculine fragrance opening with crisp apple, bergamot and ginger, followed by an aromatic heart of sage, juniper and geranium. It dries down into a smooth, warm woody base of amberwood, cedar, tonka bean and incense.",
+    topNotes: ["Apple", "Bergamot", "Ginger"],
+    heartNotes: ["Sage", "Juniper Berries", "Geranium", "Lavender"],
+    baseNotes: ["Amberwood", "Cedar", "Tonka Bean", "Incense", "Vetiver"],
+    mainAccords: ["Aromatic","Fresh Spicy","Woody","Fresh","Fruity","Green","Warm Spicy"],
+    longevity: 4,
+    projection: 4,
+    versatility: 5,
+    bestSeason: ["Spring", "Summer", "Fall", "Winter"],
+    bestTime: ["Day", "Evening"],
+    bestOccasions: ["Office","Daily","Casual","Date","Business","Evening"],
+    released: 2021,
+    inspiredBy: "YSL Y Eau de Parfum (fresh aromatic-woody direction)",
+    bestseller: false,
+    newArrival: true,
+    inStock: true,
+    sizes: sizes(239, 269, 429, 609),
+  },
 ];
 
 export const otherBrandsProducts = RAW_PRODUCTS.map((p, i) => {
